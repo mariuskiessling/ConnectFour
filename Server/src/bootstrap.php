@@ -18,3 +18,6 @@ if($config['environment'] == 'development')
 
 require_once(__DIR__.'/helpers/Logger.php');
 $logger = new \ConnectFour\Helpers\Logger("print");
+
+// Router example:
+// Router::Request('GET', '/hello', 'HelloController@sayHello', ['name' => 'Marius']);
