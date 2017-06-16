@@ -2,6 +2,8 @@
 
 namespace ConnectFour\Helpers;
 
+use \ConnectFour\Helpers\Logger as Logger;
+
 class Router {
     public static function Request($method, $path, $action, $params = [])
     {
@@ -23,7 +25,7 @@ class Router {
             }
         } else
         {
-            // TODO: Implement method not found for route.
+            Logger::Log("HTTP method not allowed for this route.", Logger::$WARNING);
         }
     }
 
@@ -52,16 +54,16 @@ class Router {
                             $controller->$function();
                         }
                     } else {
-                        // TODO: Implement function not found in controller logging.
+                        Logger::Log("Function ".$function." not found in controller ".$controllerClassName.".", Logger::$WARNING);
                     }
                 }
 
                 return $controller;
             } else {
-                // TODO: Implement controller class not found logging.
+                Logger::Log("Controller class ".$controllerClassName." not found in file ".$controllerFilename.".", Logger::$WARNING);
             }
         } else {
-            // TODO: Implement controller not found logging.
+             Logger::Log("Controller file ".$controllerFilename.".php not found.", Logger::$WARNING);
         }
     }
 }
