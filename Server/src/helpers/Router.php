@@ -7,9 +7,9 @@ use \ConnectFour\Helpers\Logger as Logger;
 class Router {
     public static function Request($method, $path, $action, $params = [])
     {
-        if($_SERVER['REQUEST_METHOD'] == $method) {
-            if($_SERVER['PATH_INFO'] == $path)
-            {
+        if(@$_SERVER['PATH_INFO'] == $path)
+        {
+            if($_SERVER['REQUEST_METHOD'] == $method) {
                 // Run action that are structured like Controller@function
                 if(preg_match('/((?:[a-zA-Z]+))(@)((?:[a-zA-Z]+))/s', $action))
                 {
@@ -23,9 +23,6 @@ class Router {
                     return self::CallController($action, "", $params);
                 }
             }
-        } else
-        {
-            Logger::Log("HTTP method not allowed for this route.", Logger::$WARNING);
         }
     }
 
