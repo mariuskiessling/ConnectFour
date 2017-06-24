@@ -29,6 +29,7 @@ class Router {
     // TODO: Escape controller filenames before accessing filesystem.
     private static function CallController($controllerFilename, $function = "", $params = []) {
         $controllerFilepath = __DIR__.'/../Controllers/'.$controllerFilename.'.php';
+        require(__DIR__.'/../Controllers/BaseController.php');
 
         if(file_exists($controllerFilepath))
         {
