@@ -9,4 +9,6 @@ Router::Request('GET', '/register', 'LoginController@showRegistration');    // C
 Router::Request('POST', '/register', 'LoginController@register');           // Called to register a new user
 
 Router::Request('GET', '/match', 'MatchController@showMatch');              // Called to show game ($_GET['id'] required)
-Router::Request('GET', '/match/create', 'MatchController@showCreateMatch'); // Callled to create a new game
+Router::Request('POST', '/match/create', 'MatchController@showCreateMatch');// Callled to create a new game
+
+Router::Request('GET', '/lobby', 'LobbyController@showLobby');              // Called to show user an interface to create new matches
