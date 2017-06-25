@@ -14,6 +14,9 @@ class LoginController extends BaseController {
 
     public function showLogin()
     {
+        Template::Render('login', [
+            'title' => "Login",
+        ]);
     }
 
     public function login()
