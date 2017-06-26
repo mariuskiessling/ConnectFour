@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Login</title>
+        <title>Register</title>
 
         <link rel="stylesheet" href="/css/main.css" />
         <link rel="stylesheet" href="/css/elegant_font.css" />
@@ -10,25 +10,36 @@
     </head>
     <body>
         <div id="authentication">
+            <div class="notification">
+                <h3 class="title"><span class="icon_check_alt2"></span>Erfolg</h3>
+                <p class="content">
+                    Der Account wurde erfolgreich angelegt.<br />
+                    Ihre Double-Opt-in-E-Mail finden Sie unter <a href="#" class="formatted">diesem</a> Link.
+                </p>
+            </div>
+
             <span id="projectInformation">This project is part of the Webengineering course at the Corporate State University Stuttgart.<br>Author: Marius Kießling</span>
 
             <div id="backgroundBox"></div>
 
-            <div id="loginWrapper" class="authenticationWrapper">
+            <div id="registerWrapper" class="authenticationWrapper">
                 <div id="authenticationContent">
-                    <h1>Login</h1>
+                    <h1>Registrieren</h1>
 
                     <div class="form">
-                        <label for="identifier">E-Mailadresse oder Nutzername</label>
-                        <input type="text" id="identifier" name="identifier"  />
+                        <label for="email">E-Mailadresse</label>
+                        <input type="text" id="email" name="email"  />
+
+                        <label for="username">Nutzername</label>
+                        <input type="text" id="username" name="username"  />
 
                         <label for="password">Passwort</label>
                         <input type="password" id="password" name="password"  />
                     </div>
 
                     <div id="bottomButtons">
-                        <button class="button"><span class="icon_lock-open_alt"></span> Anmelden</button>
-                        <a href="/register"><span class="icon_plus_alt2"></span> Account erstellen</a>
+                        <button class="button">Registrieren</button>
+                        <a href="/login"><span class="arrow_back"></span> Zur Anmeldung</a>
                     </div>
                 </div>
             </div>

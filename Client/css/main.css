@@ -5,14 +5,14 @@ html, body {
     font-family: 'Assistant', sans-serif;
 }
 
-#login {
+#authentication {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
     position: relative;
 }
 
-#login #projectInformation {
+#authentication #projectInformation {
     position: absolute;
     bottom: 20px;
     left: 20px;
@@ -24,17 +24,17 @@ html, body {
     max-width: 180px;
 }
 
-#login #backgroundBox {
+#authentication #backgroundBox {
     width: 70vw;
     height: 100vh;
     position: absolute;
     top: 0;
     right: -50px;
-    background-color: rgb(54, 212, 12);
+    background-color: #2F4858;
     transform: skew(-8deg, 0deg);
 }
 
-#login #loginWrapper {
+#authentication .authenticationWrapper {
     width: 400px;
     height: 320px;
     background-color: #fff;
@@ -47,7 +47,17 @@ html, body {
     overflow: hidden;
 }
 
-#login #loginWrapper #loginContent h1 {
+#authentication .authenticationWrapper#loginWrapper {
+    height: 320px;
+    margin: -160px 0;
+}
+
+#authentication .authenticationWrapper#registerWrapper {
+    height: 410px;
+    margin: -205px 0;
+}
+
+#authentication .authenticationWrapper #authenticationContent h1 {
     text-align: center;
     text-transform: uppercase;
     color: #444444;
@@ -57,19 +67,19 @@ html, body {
     display: block;
 }
 
-#login #loginWrapper #loginContent {
+#authentication .authenticationWrapper #authenticationContent {
     position: relative;
     overflow: hidden;
 }
 
-#login #loginWrapper #loginContent label {
+#authentication .authenticationWrapper #authenticationContent label {
     font-size: 17px;
     margin: 15px 0 0 20px;
     color: #504f4f;
     display: block;
 }
 
-#login #loginWrapper #loginContent input {
+#authentication .authenticationWrapper #authenticationContent input {
     display: block;
     box-sizing: border-box;
     margin: 5px 10px 10px 20px;
@@ -84,18 +94,27 @@ html, body {
     border-radius: 3px;
 }
 
-#login #loginWrapper #loginContent #bottomButtons {
+#authentication .authenticationWrapper #authenticationContent #bottomButtons {
     display: block;
     text-align: center;
     margin: 25px auto 0 auto;
 }
 
-#login #loginWrapper #loginContent #bottomButtons .button {
+#authentication .authenticationWrapper #authenticationContent #bottomButtons .button {
     margin: 0 24px;
+    float: left;
 }
 
-#login .button {
-    background-color: rgba(54, 212, 12, 0.5);
+#authentication .authenticationWrapper #authenticationContent #bottomButtons a {
+    margin: 0 24px;
+    float: right;
+    line-height: 42px;
+    color: #525252;
+    text-decoration: none;
+}
+
+#authentication .button {
+    background-color: #2F4858;
     border: 0;
     border-radius: 3px;
     font-family: 'Assistant', sans-serif;
@@ -104,19 +123,25 @@ html, body {
     color: #fff;
     padding: 10px 15px;
     box-shadow: 0 0 17px rgba(0, 0, 0, 0.2);
-    transition: box-shadow 0.4s;
+    transition: box-shadow 0.4s, background-color 0.6s;
 }
 
-#login .button:hover {
+#authentication .button:focus {
+    outline: none;
+    background-color: #2b414f;
+    transition: background-color 0.6s;
+}
+
+#authentication .button:hover {
     box-shadow: 0 0 17px rgba(0, 0, 0, 0.3) !important;
     transition: box-shadow 0.4s;
 }
 
-#login .button span {
+#authentication .button span {
     margin-right: 5px;
 }
 
-#login #loginWrapper #loginContent input:focus {
+#authentication .authenticationWrapper #authenticationContent input:focus {
     outline: none !important;
 }
 
@@ -155,4 +180,59 @@ html, body {
 
 #gameContent .fieldTile.hasChip.hasBlueChip .fieldHole {
     background-color: blue;
+}
+
+@keyframes fadeInNotification {
+    0% {
+        transform: translate(0, -70px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+}
+
+.notification {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: rgb(213, 209, 209);
+    box-shadow: 1px 1px 10px rgba(212, 212, 212, 0.9);
+    border-radius: 4px;
+    width: 250px;
+    color: #2d2d2d;
+    font-weight: 300;
+    animation: fadeInNotification 1s ease-in-out;
+}
+
+.notification .title {
+    font-weight: 400;
+    font-size: 20px;
+    margin: 0;
+    width: 100%;
+    background-color: rgb(196, 196, 196);
+    padding: 5px 0;
+    box-sizing: border-box;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.notification .title span {
+    margin-right: 0;
+    font-size: 18px;
+    padding: 10px;
+    margin-right: -3px;
+}
+
+.notification .content {
+    padding: 10px;
+    margin: 0;
+}
+
+a.formatted {
+    text-decoration: none;
+    color: #000;
+    border-bottom: 2px solid #000;
 }
