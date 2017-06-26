@@ -596,6 +596,45 @@ nav #logout span {
     margin-right: 10px;
 }
 
+#dialogueMessage {
+    margin: 50px auto;
+}
+
+#dialogueMessage #icon {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 100px;
+    color: #2F4858;
+}
+
+#dialogueMessage h1 {
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    font-size: 40px;
+    font-weight: 400;
+    margin: 30px 0 10px 0;
+}
+
+#dialogueMessage p {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 300;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+#dialogueMessage #buttons {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#dialogueMessage #buttons .button {
+    margin: 30px 10px;
+}
+
 /*nav {
     width: 100%;
     min-height: 400px;

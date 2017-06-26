@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Lobby</title>
+
+        <link rel="stylesheet" href="/css/main.css" />
+        <link rel="stylesheet" href="/css/elegant_font.css" />
+        <link href="https://fonts.googleapis.com/css?family=Assistant:200,300,400,700" rel="stylesheet">
+    </head>
+    <body>
+        <nav>
+            <div id="navContent">
+                <div class="centerWrapper">
+                    <div id="profileInformation">
+                        <div id="profilePicture" class="empty"></div>
+                        <div id="profileTextInformation">
+                            <span id="profileUsernameLabel">Angemeldet als:</span>
+                            <span id="profileUsername">marius</span>
+                        </div>
+                    </div>
+
+                    <div id="logout">
+                        <span class="icon_lock_alt"></span>
+                        <a href="#">Abmelden</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div id="dialogueMessage" class="centerWrapper">
+            <span id="icon" class="icon_question_alt2"></span>
+            <h1>Spiel beitreten</h1>
+            <p>Möchten Sie dem Spiel von <span class="italic">GameMaster2000</span> beitreten?</p>
+
+            <div id="buttons">
+                <button class="button"><a href="#">Ja, beitreten</a></button>
+                <button class="button"><a href="#">Abbrechen</a></button>
+            </div>
+        </div>
+
+        <div id="dialogueMessage" class="centerWrapper">
+            <span id="icon" class="icon_error-circle_alt"></span>
+            <h1>Spiel beitreten</h1>
+            <p>Beim beitreten des Spiels von <span class="italic">GameMaster2000</span> ist ein Fehler aufgetreten. Das Spiel wird bereits gespielt.</p>
+
+            <div id="buttons">
+                <button class="button"><a href="/lobby">Zur Lobby</a></button>
+            </div>
+        </div>
+
+        <div id="dialogueMessage" class="centerWrapper">
+            <span id="icon" class="icon_dislike"></span>
+            <h1>Spiel abgebrochen</h1>
+            <p>Sie haben aufgegeben.</p>
+
+            <div id="buttons">
+                <button class="button"><a href="/lobby">Zur Lobby</a></button>
+            </div>
+        </div>
+    </body>
+</html>
