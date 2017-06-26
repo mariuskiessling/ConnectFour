@@ -1,3 +1,11 @@
+.italic {
+    font-style: italic;
+}
+
+.hidden {
+    display: none;
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -180,41 +188,153 @@ input:focus {
     outline: none !important;
 }
 
+#match {
+    position: relative;
+}
+
+#match #sidebar {
+    float: left;
+    width: 260px;
+    background-color: #f4f0f0;
+    border-radius: 4px;
+    margin: 50px 30px 0 0;
+    box-shadow: 0 0 17px rgba(144, 144, 144, 0.2);
+    font-size: 18px;
+}
+
+#match #sidebar h1 {
+    font-size: 19px;
+    margin: 0 0 10px 0;
+    padding: 10px 15px;
+    background-color: #2F4858;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: 400;
+}
+
+#match #sidebar .matchInformation {
+    font-weight: 300;
+    padding: 8px 15px;
+}
+
+#match #sidebar .matchInformation .label {
+    font-weight: 400;
+}
+
+#match #sidebar .matchInformation .label span {
+    margin-right: 7px;
+    font-size: 16px;
+}
+
+#match #sidebar .matchInformation .value {
+    color: #525252;
+}
+
+#match #sidebar .buttons {
+    margin: 20px auto 20px auto;
+    padding-top: 20px;
+    border-top: 2px solid #e7e7e7;
+    text-align: center;
+    display: block;
+}
+
+#match #sidebar .buttons .button {
+    margin: 0 8px;
+}
+
+#match #gameContent {
+    float: left;
+    box-shadow: 0 0 17px rgba(0, 0, 0, 0.2);
+}
+
+#match #gameContent.hidden {
+    display: none;
+}
+
 #gameContent {
-    width: 720px;
-    height: 610px;
+    width: 460px;
+    height: 400px;
     display: block;
     margin: 50px auto 0 auto;
-    background-color: #2a3245;
+    background-color: #2F4858;
     border-radius: 4px;
-    box-shadow: 2px 2px 20px rgba(31, 31, 31, 0.2);
-    border: 10px solid #1c222e;
+    box-shadow: 2px 2px 20px rgba(31, 31, 31, 0.3);
 }
 
 #gameContent .fieldTile {
-    width: 100px;
-    height: 100px;
-    border: 1px solid #1c222e;
+    width: 65px;
+    height: 65px;
     float: left;
     position: relative;
 }
 
 #gameContent .fieldTile .fieldHole {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background-color: #fff;
     position: absolute;
     top: 50%;
     left: 50%;
-    margin:  -32px -32px;
-    border: 4px solid #1c222e;
+    margin: -25px -25px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.53) inset;
     cursor: pointer;
 }
 
 #gameContent .fieldTile.hasChip.hasBlueChip .fieldHole {
     background-color: blue;
+}
+
+#match #surrenderQuestion {
+    width: 460px;
+    display: block;
+    background-color: #f4f0f0;
+    border-radius: 4px;
+    margin: 50px 30px 0 0;
+    box-shadow: 0 0 17px rgba(144, 144, 144, 0.2);
+    font-size: 18px;
+    float: left;
+    padding: 20px 20px 40px 20px;
+    box-sizing: border-box;
+    font-weight: 300;
+}
+
+#match #surrenderQuestion.hidden {
+    display: none;
+}
+
+#match #surrenderQuestion h1 {
+    font-weight: 400;
+    font-size: 27px;
+    margin: 15px 0;
+}
+
+#match #surrenderQuestion #surrenderText {
+    display: block;
+    font-size: 19px;
+    font-style: italic;
+    font-weight: 400;
+}
+
+#match #surrenderQuestion input {
+    background-color: #e4e4e4;
+    margin: 10px 0 30px 0;
+}
+
+#match #surrenderQuestion #surrenderError {
+    font-weight: 400;
+    margin: 20px 0;
+    display: block;
+}
+
+#match #surrenderQuestion #surrenderError.hidden {
+    display: none;
+}
+
+#match #surrenderQuestion #cancelSurrenderLink {
+    margin-left: 20px;
 }
 
 @keyframes fadeInNotification {

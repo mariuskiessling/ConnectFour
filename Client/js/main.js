@@ -90,5 +90,35 @@ let Interface = {
     createNewMatchButtonClickedEventListener: function() {
         document.getElementById("createNewMatchForm").className = "hidden";
         document.getElementById("createNewMatchAccessLink").className = "";
+    },
+
+    addSurrenderButtonClickedEventListener: function(elementId) {
+        document.getElementById(elementId).addEventListener("click", Interface.surrenderButtonClickedEventListener);
+    },
+
+    surrenderButtonClickedEventListener: function() {
+        document.getElementById("gameContent").className = "hidden";
+        document.getElementById("surrenderQuestion").className = "";
+    },
+
+    addConfirmSurrenderButtonClickedEventListener: function(elementId) {
+        document.getElementById(elementId).addEventListener("click", Interface.confirmSurrenderButtonClickedEventListener);
+    },
+
+    confirmSurrenderButtonClickedEventListener: function() {
+        if(document.getElementById("surrenderText").innerHTML == document.getElementById("surrenderTextAnswer").value) {
+            // TODO: Call surrender URL
+        } else {
+            document.getElementById("surrenderError").className = "";
+        }
+    },
+
+    addCancelSurrenderLinkClickedEventListener: function(elementId) {
+        document.getElementById(elementId).addEventListener("click", Interface.cancelSurrenderLinkClickedEventListener);
+    },
+
+    cancelSurrenderLinkClickedEventListener: function() {
+        document.getElementById("gameContent").className = "";
+        document.getElementById("surrenderQuestion").className = "hidden";
     }
 };
