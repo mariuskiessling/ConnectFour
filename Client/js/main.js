@@ -76,4 +76,19 @@ let Game = {
             }, Game.settings.chipMoveDownAnimationSpeed);
         }
     },
-}
+};
+
+let Interface = {
+    init: function() {
+
+    },
+
+    addCreateNewMatchButtonClickedEventListener: function(elementId) {
+        document.getElementById(elementId).addEventListener("click", Interface.createNewMatchButtonClickedEventListener);
+    },
+
+    createNewMatchButtonClickedEventListener: function() {
+        document.getElementById("createNewMatchForm").className = "hidden";
+        document.getElementById("createNewMatchAccessLink").className = "";
+    }
+};

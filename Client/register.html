@@ -27,19 +27,35 @@
                     <h1>Registrieren</h1>
 
                     <div class="form">
-                        <label for="email">E-Mailadresse</label>
-                        <input type="text" id="email" name="email"  />
+                        <form enctype="multipart/form-data">
+                            <!-- <label for="email">E-Mailadresse</label>
+                            <input type="text" id="email" name="email"  />
 
-                        <label for="username">Nutzername</label>
-                        <input type="text" id="username" name="username"  />
+                            <label for="username">Nutzername</label>
+                            <input type="text" id="username" name="username"  />
 
-                        <label for="password">Passwort</label>
-                        <input type="password" id="password" name="password"  />
+                            <label for="password">Passwort</label>
+                            <input type="password" id="password" name="password"  /> -->
+
+                            <label for="age">Alter</label>
+                            <input type="text" id="age" name="age"  />
+
+                            <label for="sex">Geschlecht</label>
+                            <select name="sex">
+                                <option value="m">Männlich</option>
+                                <option value="f">Weiblich</option>
+                                <option value="o">Sonstiges</option>
+                            </select>
+
+                            <label>Profilbild (PNG oder JPG, max. 1MB)</label>
+                            <input id="profilePicture" name="profilePicture" type="file" accept="image/x-png,image/jpeg">
+                        </form>
                     </div>
 
                     <div id="bottomButtons">
-                        <button class="button">Registrieren</button>
-                        <a href="/login"><span class="arrow_back"></span> Zur Anmeldung</a>
+                        <!-- <button class="button">Registrieren</button> -->
+                        <button class="button">Registrierung abschließen</button>
+                        <!-- <a href="/login"><span class="arrow_back"></span> Zur Anmeldung</a> -->
                     </div>
                 </div>
             </div>
