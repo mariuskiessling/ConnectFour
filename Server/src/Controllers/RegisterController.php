@@ -125,6 +125,32 @@ class RegisterController extends BaseController {
         }
     }
 
+    public function showRegistrationEmail()
+    {
+        include(__DIR__.'/../config.php');
+
+        if(isset($_GET['userId']))
+        {
+            $sql = 'SELECT username, email, registration_token FROM users WHERE id = ? LIMIT 1';
+            $query = $this->db->prepare($sql);
+            $query->bind_param('i', $_GET['userId']);
+            $query->execute();
+            $result = $query->get_result();
+            $resultData = $result->fetch_array();
+
+            Template::Render('registration_email', [
+                'title' => "Double-Opt-in-E-Mail",
+                'username' => $resultData['username'],
+                'email' => $resultData['email'],
+                'registrationToken' => $resultData['registration_token'],
+                'host' => $config['host']
+            ]);
+        } else
+        {
+            // TODO: Add error handling on missing user id
+        }
+    }
+
     private function generateSecureRegistrationToken()
     {
         $randomBytes = openssl_random_pseudo_bytes(384);
