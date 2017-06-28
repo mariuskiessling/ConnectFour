@@ -66,7 +66,8 @@ class LoginController extends BaseController {
                         'title' => 'Fehler',
                         'message' => 'Bei der Anmeldung ist ein Fehler aufgetreten. Bitte prüfen Sie Ihre Anmeldedaten.',
                         'icon' => 'icon_error-circle_alt'
-                    ]
+                    ],
+                    'identifier' => $_POST['identifier']
                 ]);
                 die();
             }
@@ -78,7 +79,8 @@ class LoginController extends BaseController {
                     'title' => 'Fehler',
                     'message' => 'Bei der Anmeldung ist ein Fehler aufgetreten. Bitte prüfen Sie Ihre Anmeldedaten.',
                     'icon' => 'icon_error-circle_alt'
-                ]
+                ],
+                'identifier' => $_POST['identifier']
             ]);
             die();
         }

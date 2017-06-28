@@ -26,7 +26,7 @@ include('header.tpl.php');
                 <form action="/login" method="post">
                     <div class="form">
                         <label for="identifier">E-Mailadresse oder Nutzername</label>
-                        <input type="text" id="identifier" name="identifier"  />
+                        <input type="text" id="identifier" name="identifier" value="<?= @$identifier ?>" />
 
                         <label for="password">Passwort</label>
                         <input type="password" id="password" name="password"  />
