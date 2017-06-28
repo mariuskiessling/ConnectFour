@@ -12,7 +12,7 @@ include('header.tpl.php');
 
                     wir haben Ihren Account erfolgreich erstellt. Bitte klicken Sie auf den folgenden Link, um Ihren Account zu bestätigen:<br /><br />
 
-                    <a href="#" class="formatted"><?= @$host ?>/register/confirm?token=<?= @$registrationToken ?></a><br /><br />
+                    <a href="<?= @$host ?>/register/confirm?token=<?= @$registrationToken ?>" class="formatted"><?= @$host ?>/register/confirm?token=<?= @$registrationToken ?></a><br /><br />
 
                     Wir wünschen viel Spaß mit 4-Gewinnt!
                 </div>
