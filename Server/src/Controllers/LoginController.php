@@ -14,9 +14,16 @@ class LoginController extends BaseController {
 
     public function showLogin()
     {
-        Template::Render('login', [
-            'title' => "Login",
-        ]);
+        if(!isset($_SESSION['userId']))
+        {
+            Template::Render('login', [
+                'title' => "Login",
+            ]);
+        } else
+        {
+            header('Location: /lobby');
+            die();
+        }
     }
 
     public function login()
@@ -53,12 +60,26 @@ class LoginController extends BaseController {
                 }
             } else
             {
-                header('Location: /login?error');
+                Template::Render('login', [
+                    'title' => "Login",
+                    'notification' => [
+                        'title' => 'Fehler',
+                        'message' => 'Bei der Anmeldung ist ein Fehler aufgetreten. Bitte prüfen Sie Ihre Anmeldedaten.',
+                        'icon' => 'icon_error-circle_alt'
+                    ]
+                ]);
                 die();
             }
         } else
         {
-            header('Location: /login?error');
+            Template::Render('login', [
+                'title' => "Login",
+                'notification' => [
+                    'title' => 'Fehler',
+                    'message' => 'Bei der Anmeldung ist ein Fehler aufgetreten. Bitte prüfen Sie Ihre Anmeldedaten.',
+                    'icon' => 'icon_error-circle_alt'
+                ]
+            ]);
             die();
         }
     }
