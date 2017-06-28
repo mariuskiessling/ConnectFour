@@ -7,7 +7,7 @@ use \ConnectFour\Helpers\Logger as Logger;
 class Router {
     public static function Request($method, $path, $action, $params = [])
     {
-        if(@$_SERVER['PATH_INFO'] == $path)
+        if(@$_SERVER['PATH_INFO'] == $path || @$_SERVER['PATH_INFO'] == $path.'/')
         {
             if($_SERVER['REQUEST_METHOD'] == $method) {
                 // Run action that are structured like Controller@function
