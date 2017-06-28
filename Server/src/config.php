@@ -2,10 +2,11 @@
 
 $config = [
     'environment' => 'development',
+    'host' => 'http://localhost:8080',
     'DB' => [
-        'host' => 'localhost',
+        'host' => '127.0.0.1',
         'username' => 'dhbw-we-cf',
         'password' => 'win',
-        'database' => 'connectfour'
+        'database' => 'dhbw-we-cf'
     ]
 ];
