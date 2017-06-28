@@ -34,11 +34,11 @@ class LoginController extends BaseController {
             if(filter_var($_POST['identifier'], FILTER_VALIDATE_EMAIL))
             {
                 // Email login
-                $sql = 'SELECT id, password FROM users WHERE email = ? LIMIT 1';
+                $sql = 'SELECT id, password, activated FROM users WHERE email = ? LIMIT 1';
             } else
             {
                 // Username login
-                $sql = 'SELECT id, password FROM users WHERE username = ? LIMIT 1';
+                $sql = 'SELECT id, password, activated FROM users WHERE username = ? LIMIT 1';
             }
 
             $query = $this->db->prepare($sql);
@@ -51,11 +51,34 @@ class LoginController extends BaseController {
                 $resultData = $result->fetch_array();
                 if(password_verify($_POST['password'], $resultData['password']))
                 {
-                    $_SESSION['userId'] = $resultData['id'];
-                    header('Location: /lobby');
-                    die();
+                    if($resultData['activated'] == 1)
+                    {
+                        $_SESSION['userId'] = $resultData['id'];
+                        header('Location: /lobby');
+                        die();
+                    } else
+                    {
+                        Template::Render('login', [
+                            'title' => "Login",
+                            'notification' => [
+                                'title' => 'Fehler',
+                                'message' => 'Bei der Anmeldung ist ein Fehler aufgetreten. Sie haben Ihren Account noch nicht aktiviert.',
+                                'icon' => 'icon_error-circle_alt'
+                            ],
+                            'identifier' => $_POST['identifier']
+                        ]);
+                        die();
+                    }
                 } else {
-                    header('Location: /login?error');
+                    Template::Render('login', [
+                        'title' => "Login",
+                        'notification' => [
+                            'title' => 'Fehler',
+                            'message' => 'Bei der Anmeldung ist ein Fehler aufgetreten. Bitte prüfen Sie Ihre Anmeldedaten.',
+                            'icon' => 'icon_error-circle_alt'
+                        ],
+                        'identifier' => $_POST['identifier']
+                    ]);
                     die();
                 }
             } else
