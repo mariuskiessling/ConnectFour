@@ -1,15 +1,10 @@
 <?php
 
 class AccountController extends BaseController {
-    private $db;
 
     public function __construct()
     {
         parent::__construct();
-        include(__DIR__.'/../config.php');
-
-        $this->db = new mysqli($config['DB']['host'], $config['DB']['username'], $config['DB']['password'], $config['DB']['database']);
-        // TODO: Add error handling on connection error (HTTP 500)
     }
 
     public function activateAccount()
