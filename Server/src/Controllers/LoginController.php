@@ -103,4 +103,11 @@ class LoginController extends BaseController {
             die();
         }
     }
+
+    public function logout()
+    {
+        session_destroy();
+        header('Location: /login');
+        die();
+    }
 }

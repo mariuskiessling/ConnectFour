@@ -4,6 +4,7 @@ use \ConnectFour\Helpers\Router as Router;
 
 Router::Request('GET', '/login', 'LoginController@showLogin');              // Called to show login
 Router::Request('POST', '/login', 'LoginController@login');                 // Called to validate login
+Router::Request('GET', '/logout', 'LoginController@logout');
 
 Router::Request('GET', '/register', 'RegisterController@showRegistration');    // Called to show registration
 Router::Request('POST', '/register', 'RegisterController@register');           // Called to register a new user
