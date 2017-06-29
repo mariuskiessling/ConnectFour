@@ -8,5 +8,6 @@ $config = [
         'username' => 'dhbw-we-cf',
         'password' => 'win',
         'database' => 'dhbw-we-cf'
-    ]
+    ],
+    'timezone' => 'Europe/Berlin'
 ];

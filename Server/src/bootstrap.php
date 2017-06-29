@@ -15,4 +15,6 @@ if($config['environment'] == 'development')
     error_reporting(0);
 }
 
+date_default_timezone_set($config['timezone']);
+
 require_once(__DIR__.'/routes.php');
