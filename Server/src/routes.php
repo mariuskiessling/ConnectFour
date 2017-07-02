@@ -12,6 +12,6 @@ Router::Request('GET', '/register/email', 'RegisterController@showRegistrationEm
 Router::Request('GET', '/register/confirm', 'AccountController@activateAccount');           // Called to activate a new user
 
 Router::Request('GET', '/match', 'MatchController@showMatch');              // Called to show game ($_GET['id'] required)
-Router::Request('POST', '/match/create', 'MatchController@showCreateMatch');// Callled to create a new game
+Router::Request('POST', '/match/create', 'MatchController@createMatch');// Callled to create a new game
 
 Router::Request('GET', '/lobby', 'LobbyController@showLobby');              // Called to show user an interface to create new matches

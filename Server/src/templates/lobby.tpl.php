@@ -94,25 +94,28 @@ include('header.tpl.php');
                 <h1>Neues Spiel erstellen</h1>
                 <p>
                     Ein neues Spiel ist nach der Erstellung immer öffentlich sichtbar. Das bedeutet, dass dem neu erstellten Spiel jeder andere Spieler beitreten kann.
-                    Falls Sie einem Mitspieler schnell Zugriff auf das neu erstellte Spiel geben wollen, können Sie den fünfstelligen Spielcode (z.B. 0dh3j) an Ihren Mitspieler weitergeben.
+                    Falls Sie einem Mitspieler schnell Zugriff auf das neu erstellte Spiel geben wollen, können Sie den fünfstelligen Spielcode (z.B. 5Z6LA) an Ihren Mitspieler weitergeben.
                 </p>
 
                 <div id="createNewMatchForm">
-                    <label for="color">Chip-Farbe</label>
-                    <select name="color" id="color">
-                        <option value="yr">Gelb / Rot</option>
-                        <option value="gb">Grün / Blau</option>
+                    <label for="color_scheme">Chip-Farbe</label>
+                    <select name="color_scheme" id="color_scheme">
+                        <?php
+                        while($row = $colorSchemes->fetch_assoc()) {
+                            echo '<option value="'.$row['id'].'">'.$row['description'].'</option>';
+                        }
+                        ?>
                     </select>
                     <button class="button" id="createNewMatchButton">Spiel erstellen</button>
                 </div>
                 <div id="createNewMatchAccessLink" class="hidden">
                     <h2>Das Spiel wurde erstellt! Sie können Ihrem Mitspieler folgenden Link zum schnellen Beitreten geben:</h2>
-                    <span id="quickAccessLink"><span class="icon_link"></span>https://server.tld/match/join/?qac=0dh3j</span>
+                    <span id="quickAccessLink"><span class="icon_link"></span><?= $host ?>/match/join/?qac=<span id="quickAccessCodeLinkPlaceholder"></span></span>
 
                     <h2>Ihr Mitspieler kann ebenfalls über folgenden Quick-Access-Code beitreten:</h2>
-                    <span id="quickAccessCode"><span class="icon_tag_alt"></span>0dh3j</span>
+                    <span id="quickAccessCode"><span class="icon_tag_alt"></span><span id="quickAccessCodeValuePlaceholder"></span></span>
 
-                    <button class="button"><a href="#">Erstelltes Spiel aufrufen</a></button>
+                    <button class="button"><a id="openCreatedMatchButton" href="" target="_blank">Erstelltes Spiel aufrufen</a></button>
                 </div>
             </div>
         </div>

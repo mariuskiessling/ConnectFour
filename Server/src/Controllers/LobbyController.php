@@ -8,6 +8,8 @@ class LobbyController extends BaseController {
 
     public function showLobby()
     {
+        include(__DIR__.'/../config.php');
+
         // User information
         $sql = 'SELECT username FROM users WHERE id = ?';
         $query = $this->db->prepare($sql);
@@ -49,6 +51,7 @@ class LobbyController extends BaseController {
             'userMatches' => $userMatches,
             'colorSchemes' => $colorSchemes,
             'openMatches' => $openMatches,
+            'host' => $config['host']
         ]);
     }
 }

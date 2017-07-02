@@ -90,6 +90,23 @@ let Interface = {
     createNewMatchButtonClickedEventListener: function() {
         document.getElementById("createNewMatchForm").className = "hidden";
         document.getElementById("createNewMatchAccessLink").className = "";
+
+        let ajax = new XMLHttpRequest();
+        ajax.open("POST", "/match/create");
+        ajax.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        ajax.addEventListener('load', function(event) {
+            if(ajax.status == 200) {
+                let response = JSON.parse(ajax.responseText);
+                document.getElementById("quickAccessCodeLinkPlaceholder").innerHTML = response.quick_access_code;
+                document.getElementById("quickAccessCodeValuePlaceholder").innerHTML = response.quick_access_code;
+                document.getElementById("openCreatedMatchButton").href = "/match/"+response.public_id;
+            } else
+            {
+                // TODO: Add better error handling
+                alert("Bei der Erstellung des Spiels ist ein Fehler aufgetreten.");
+            }
+        });
+        ajax.send("color_scheme="+encodeURIComponent(document.getElementById("color_scheme").value));
     },
 
     addSurrenderButtonClickedEventListener: function(elementId) {
