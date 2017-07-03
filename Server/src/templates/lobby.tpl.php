@@ -3,30 +3,15 @@ include('header.tpl.php');
 ?>
 
 <body>
-    <nav>
-        <div id="navContent">
-            <div class="centerWrapper">
-                <div id="profileInformation">
-                    <div id="profilePicture" class="empty"></div>
-                    <div id="profileTextInformation">
-                        <span id="profileUsernameLabel">Angemeldet als:</span>
-                        <span id="profileUsername"><?= @$username ?></span>
-                    </div>
-                </div>
-
-                <div id="logout">
-                    <span class="icon_lock_alt"></span>
-                    <a href="/logout">Abmelden</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <?php
+    include('nav.tpl.php');
+    ?>
     <div id="lobby">
         <div id="quickJoinMatch" class="centerWrapper">
             <h1>Einem Spiel beitreten (Quick-Access-Code)</h1>
             <p>Sie können jederzeit einem Spiel mit einem Quick-Access-Code beitreten. Geben dazu einefach den Quick-Access-Code Ihres Mitspielers im folgenden Feld ein. Falls Sie einem anderen öffentlichen Spiel beitreten möchten, nutzen Sie bitte die Liste weiter unten.</p>
 
-            <form action="#" method="post">
+            <form action="/match/join" method="get">
                 <label for="qac">Quick-Access-Code</label>
                 <input type="text" name="qac" id="qac" />
                 <input type="submit" value="Spiel beitreten" class="button">
@@ -110,7 +95,7 @@ include('header.tpl.php');
                 </div>
                 <div id="createNewMatchAccessLink" class="hidden">
                     <h2>Das Spiel wurde erstellt! Sie können Ihrem Mitspieler folgenden Link zum schnellen Beitreten geben:</h2>
-                    <span id="quickAccessLink"><span class="icon_link"></span><?= $host ?>/match/join/?qac=<span id="quickAccessCodeLinkPlaceholder"></span></span>
+                    <span id="quickAccessLink"><span class="icon_link"></span><?= $host ?>/match/join?qac=<span id="quickAccessCodeLinkPlaceholder"></span></span>
 
                     <h2>Ihr Mitspieler kann ebenfalls über folgenden Quick-Access-Code beitreten:</h2>
                     <span id="quickAccessCode"><span class="icon_tag_alt"></span><span id="quickAccessCodeValuePlaceholder"></span></span>
