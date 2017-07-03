@@ -73,6 +73,88 @@ class MatchController extends BaseController {
         }
     }
 
+    public function showMatchJoin()
+    {
+        $sql = 'SELECT username FROM users WHERE id = ?';
+        $query = $this->db->prepare($sql);
+        $query->bind_param('i', $_SESSION['userId']);
+        $query->execute();
+        $userInformation = $query->get_result();
+
+        if(isset($_GET['qac']))
+        {
+            $sql = 'SELECT users.username, matches.public_id, matches.creator_id FROM matches
+                JOIN users ON matches.creator_id = users.id
+                WHERE matches.quick_access_code = ?';
+            $query = $this->db->prepare($sql);
+            $query->bind_param('s', $_GET['qac']);
+            $query->execute();
+            $matchInformation = $query->get_result();
+            $matchInformationData = $matchInformation->fetch_array();
+
+            if($matchInformation->num_rows != 0)
+            {
+                if($matchInformationData['creator_id'] == $_SESSION['userId'])
+                {
+                    header('Location: /match?m='.$matchInformationData['public_id']);
+                }
+                Template::Render('match_dialouge', [
+                    'title' => "Lobby",
+                    'username' => $userInformation->fetch_array()['username'],
+                    'dialouge' => [
+                        'icon' => 'icon_question_alt2',
+                        'title' => 'Spiel beitreten',
+                        'message' => 'Möchten Sie dem Spiel von <span class="italic">'.$matchInformationData['username'].'</span> beitreten?',
+                        'buttons' => [
+                            [
+                                'label' => 'Ja, beitreten',
+                                'link' => '/match/join/confirm?qac='.$_GET['qac']
+                            ],
+                            [
+                                'label' => 'Abbrechen',
+                                'link' => '/lobby'
+                            ]
+                        ]
+                    ]
+                ]);
+            } else
+            {
+                Template::Render('match_dialouge', [
+                    'title' => "Lobby",
+                    'username' => $userInformation->fetch_array()['username'],
+                    'dialouge' => [
+                        'icon' => 'icon_error-circle_alt',
+                        'title' => 'Spiel beitreten',
+                        'message' => 'Das Spiel existiert nicht.',
+                        'buttons' => [
+                            [
+                                'label' => 'Zur Lobby',
+                                'link' => '/lobby'
+                            ]
+                        ]
+                    ]
+                ]);
+            }
+        } else
+        {
+            Template::Render('match_dialouge', [
+                'title' => "Lobby",
+                'username' => $userInformation->fetch_array()['username'],
+                'dialouge' => [
+                    'icon' => 'icon_error-circle_alt',
+                    'title' => 'Spiel beitreten',
+                    'message' => 'Das Spiel existiert nicht.',
+                    'buttons' => [
+                        [
+                            'label' => 'Zur Lobby',
+                            'link' => '/lobby'
+                        ]
+                    ]
+                ]
+            ]);
+        }
+    }
+
     private function generateQuickAccessCode($length = 5)
     {
         $dataset = '0123456789ABCDEFGHKLMNOPQRSTUVWXYZ';
