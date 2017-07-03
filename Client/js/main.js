@@ -1,53 +1,101 @@
 let Game = {
     width: 0,
     height: 0,
+    matchId: "",
+    active: false,
+    userCode: 0,
 
     settings: {
         chipMoveDownAnimationSpeed: 250 //ms
     },
 
-    init: function(width, height) {
+    init: function(width, height, matchId) {
         Game.width = width;
         Game.height = height;
+        Game.matchId = matchId;
 
-        // Create new field that can be edited without beeing inside the DOM.
-        let field = document.createElement("div");
-        field.id = "field";
+        let ajax = new XMLHttpRequest();
+        ajax.open("GET", "/match/update?match_id="+Game.matchId);
+        ajax.addEventListener('load', function(event) {
+            if(ajax.status == 200) {
+                let response = JSON.parse(ajax.responseText);
+                console.log(JSON.parse(response.field));
 
-        for(let y = 0; y < height; y++) {
-            for(let x = 0; x < width; x++) {
-                let newFieldElement = document.createElement("div");
-                newFieldElement.className = "fieldTile";
-                newFieldElement.dataset.x = x;
-                newFieldElement.dataset.y = y;
+                // Create new field that can be edited without beeing inside the DOM.
+                let field = document.createElement("div");
+                field.id = "field";
 
-                let fieldHole = document.createElement("div");
-                fieldHole.className = "fieldHole";
-                newFieldElement.addEventListener("click", Game.gameFieldClicked);
-                newFieldElement.appendChild(fieldHole);
+                for(let y = 0; y < height; y++) {
+                    for(let x = 0; x < width; x++) {
+                        let newFieldElement = document.createElement("div");
+                        newFieldElement.className = "fieldTile";
+                        newFieldElement.dataset.x = x;
+                        newFieldElement.dataset.y = y;
 
-                field.appendChild(newFieldElement);
+                        let fieldHole = document.createElement("div");
+                        fieldHole.className = "fieldHole";
+                        newFieldElement.addEventListener("click", Game.gameFieldClicked);
+                        newFieldElement.appendChild(fieldHole);
+
+                        field.appendChild(newFieldElement);
+                    }
+                }
+
+                field = Game.loadField(field, JSON.parse(response.field));
+
+                setTimeout(function() {
+                    document.getElementById("loadGameLabel").className = "hidden";
+                    document.getElementById("gameContent").appendChild(field);
+
+                    Game.updateMatchInformation();
+
+                    console.info("Game successfully initialized.\nWidth: " + Game.width + "\nHeight: " + Game.height + "\nMatch ID: " + Game.matchId);
+
+                    setInterval(Game.updateMatchInformation, 3000);
+                }, 1000);
+            } else
+            {
+                // TODO: Add error handling
+            }
+        });
+        ajax.send();
+    },
+
+    loadField: function(element, field) {
+        for(let y = 0; y < Game.height; y++) {
+            for(let x = 0; x < Game.width; x++) {
+                let tile = element.querySelectorAll("[data-x='" + x + "'][data-y='" + y + "']")[0];
+
+                if(field[y][x] == 0) {
+                    tile.className = "fieldTile";
+                }
+                if(field[y][x] == 1) {
+                    tile.className = "fieldTile hasChip hasChipA";
+                }
+                if(field[y][x] == 2) {
+                    tile.className = "fieldTile hasChip hasChipB";
+                }
             }
         }
 
-        document.getElementById("gameContent").appendChild(field);
-
-        console.info("Game successfully initialized.\nWidth: " + Game.width + "\nHeight: " + Game.height);
-        console.info(field);
+        return element;
     },
 
     gameFieldClicked: function(event) {
-        let chipPositionX = parseInt(event.target.parentElement.dataset.x);
-        let chipPositionY = parseInt(event.target.parentElement.dataset.y);
+        if(Game.active) {
+            Game.active = false;
+            let chipPositionX = parseInt(event.target.parentElement.dataset.x);
+            let chipPositionY = parseInt(event.target.parentElement.dataset.y);
 
-        event.target.parentElement.className += " hasChip hasBlueChip";
+            event.target.parentElement.className += " hasChip hasChipA";
 
-        // Check if chip already exists at this position
-        if(!event.target.classList.contains("hasChip")) {
+            // Check if chip already exists at this position
+            if(!event.target.classList.contains("hasChip")) {
 
-            // Check if chip is inserted on a higher level
-            if(chipPositionY < Game.height - 1) {
-                Game.moveChipDown(event.target.parentElement);
+                // Check if chip is inserted on a higher level
+                if(chipPositionY < Game.height - 1) {
+                    Game.moveChipDown(event.target.parentElement);
+                }
             }
         }
     },
@@ -67,15 +115,42 @@ let Game = {
 
         if(fieldBelow != undefined && !fieldBelow.classList.contains('hasChip')) {
             element.classList.remove("hasChip");
-            element.classList.remove("hasBlueChip");
+            element.classList.remove("hasChipA");
 
-            fieldBelow.className += " hasChip hasBlueChip";
+            fieldBelow.className += " hasChip hasChipA";
 
             setTimeout(function() {
                 Game.moveChipDown(fieldBelow);
             }, Game.settings.chipMoveDownAnimationSpeed);
         }
     },
+
+    updateMatchInformation: function() {
+        let ajax = new XMLHttpRequest();
+        ajax.open("GET", "/match/update?match_id="+Game.matchId);
+        ajax.addEventListener('load', function(event) {
+            if(ajax.status == 200) {
+                let response = JSON.parse(ajax.responseText);
+
+                if(!Game.active) {
+                    let field = Game.loadField(document.getElementById("field"), JSON.parse(response.field));
+                    let gameContent = document.getElementById("gameContent");
+                    gameContent.replaceChild(field, document.getElementById("field"));
+                }
+
+                Game.active = response.active;
+                Game.userCode = response.user_code;
+
+                document.getElementById("moves").innerHTML = response.moves;
+
+                // TODO: Add surrender check
+            } else
+            {
+                // TODO: Add error handling
+            }
+        });
+        ajax.send();
+    }
 };
 
 let Interface = {

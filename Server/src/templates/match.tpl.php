@@ -17,7 +17,7 @@ include('header.tpl.php');
             </div>
             <div class="matchInformation">
                 <span class="label"><span class="icon_grid-3x3"></span>Züge:</span>
-                <span class="value"><?= $moves ?></span>
+                <span id="moves" class="value"><?= $moves ?></span>
             </div>
             <div class="matchInformation">
                 <span class="label"><span class="icon_circle-slelected"></span>Farbe:</span>
@@ -30,7 +30,9 @@ include('header.tpl.php');
             </div>
         </div>
 
-        <div id="gameContent"></div>
+        <div id="gameContent">
+            <h2 id="loadGameLabel">Das Spiel wird geladen...</h2>
+        </div>
 
         <div id="surrenderQuestion" class="hidden">
             <h1>Möchten Sie wirklich aufgeben?</h1>
@@ -48,7 +50,7 @@ include('header.tpl.php');
 
         <script src="/js/main.js" charset="utf-8"></script>
         <script>
-            Game.init(7, 6);
+            Game.init(7, 6, "<?= $_GET['m'] ?>");
             Interface.addSurrenderButtonClickedEventListener("surrenderButton");
             Interface.addConfirmSurrenderButtonClickedEventListener("confirmSurrenderButton");
             Interface.addCancelSurrenderLinkClickedEventListener("cancelSurrenderLink");

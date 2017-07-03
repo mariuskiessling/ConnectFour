@@ -253,6 +253,14 @@ input:focus {
     display: none;
 }
 
+#match #gameContent #loadGameLabel {
+    text-align: center;
+    font-weight: 400;
+    font-size: 22px;
+    color: #dfdfdf;
+    margin: 160px 0;
+}
+
 #gameContent {
     width: 460px;
     height: 400px;
@@ -283,7 +291,7 @@ input:focus {
     cursor: pointer;
 }
 
-#gameContent .fieldTile.hasChip.hasBlueChip .fieldHole {
+#gameContent .fieldTile.hasChip.hasChipA .fieldHole {
     background-color: blue;
 }
 
@@ -360,6 +368,7 @@ input:focus {
     color: #2d2d2d;
     font-weight: 300;
     animation: fadeInNotification 1s ease-in-out;
+    z-index: 99999;
 }
 
 .notification .title {

@@ -15,5 +15,6 @@ Router::Request('GET', '/match', 'MatchController@showMatch');              // C
 Router::Request('POST', '/match/create', 'MatchController@createMatch');// Callled to create a new game
 Router::Request('GET', '/match/join', 'MatchController@showMatchJoin');
 Router::Request('GET', '/match/join/confirm', 'MatchController@joinMatch');
+Router::Request('GET', '/match/update', 'MatchController@updateMatch');
 
 Router::Request('GET', '/lobby', 'LobbyController@showLobby');              // Called to show user an interface to create new matches
