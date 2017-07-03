@@ -7,4 +7,5 @@
         <link rel="stylesheet" href="/css/main.css" />
         <link rel="stylesheet" href="/css/elegant_font.css" />
         <link href="https://fonts.googleapis.com/css?family=Assistant:200,300,400,700" rel="stylesheet">
+        <link rel="shortcut icon" href="/img/favicon.png">
     </head>
