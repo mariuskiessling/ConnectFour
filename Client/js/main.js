@@ -95,6 +95,8 @@ let Game = {
                 // Check if chip is inserted on a higher level
                 if(chipPositionY < Game.height - 1) {
                     Game.moveChipDown(event.target.parentElement);
+                } else {
+                    Game.pushMoveToServer(document.getElementById("field"));
                 }
             }
         }
@@ -122,6 +124,8 @@ let Game = {
             setTimeout(function() {
                 Game.moveChipDown(fieldBelow);
             }, Game.settings.chipMoveDownAnimationSpeed);
+        } else {
+            Game.pushMoveToServer(document.getElementById("field"));
         }
     },
 
@@ -150,6 +154,44 @@ let Game = {
             }
         });
         ajax.send();
+    },
+
+    pushMoveToServer: function(element) {
+        let field = [];
+
+        for(let y = 0; y < Game.height; y++) {
+            field[y] = [];
+            for(let x = 0; x < Game.width; x++) {
+                let tile = element.querySelectorAll("[data-x='" + x + "'][data-y='" + y + "']")[0];
+
+                if(tile.classList.contains("hasChip")) {
+                    if(tile.classList.contains("hasChipA")) {
+                        field[y][x] = 1;
+                    }
+                    if(tile.classList.contains("hasChipB")) {
+                        field[y][x] = 2;
+                    }
+                } else {
+                    field[y][x] = 0;
+                }
+            }
+        }
+
+        let ajax = new XMLHttpRequest();
+        ajax.open("POST", "/match/make_move");
+        ajax.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        ajax.addEventListener('load', function(event) {
+            if(ajax.status == 200) {
+                let response = JSON.parse(ajax.responseText);
+                document.getElementById("moves").innerHTML = response.moves;
+            } else
+            {
+                // TODO: Add error handling
+            }
+        });
+        ajax.send("match_id="+Game.matchId+"&field="+JSON.stringify(field));
+
+        console.log(field);
     }
 };
 

@@ -278,7 +278,7 @@ class MatchController extends BaseController {
         }
     }
 
-    public function updateMatch()
+    public function getMatchInformation()
     {
         if(isset($_GET['match_id']))
         {
@@ -299,6 +299,42 @@ class MatchController extends BaseController {
                     'active' => $matchInformationData['active_player_id'] == $_SESSION['userId'],
                     'user_code' => $matchInformationData['active_player_id'] == $_SESSION['userId'] ? 1 : 2
                 ]);
+            } else
+            {
+                http_response_code(400);
+                echo json_encode([
+                    'error' => 'Match does not exist.'
+                ]);
+            }
+        } else
+        {
+            http_response_code(400);
+            echo json_encode([
+                'error' => 'Missing parameters.'
+            ]);
+        }
+    }
+
+    public function makeMove()
+    {
+        if(isset($_POST['match_id']) && isset($_POST['field']))
+        {
+            $sql = 'SELECT field, moves FROM matches WHERE public_id = ?';
+            $query = $this->db->prepare($sql);
+            $query->bind_param('s', $_POST['match_id']);
+            $query->execute();
+            $matchInformation = $query->get_result();
+
+            if($matchInformation->num_rows != 0)
+            {
+                $matchInformationData = $matchInformation->fetch_array();
+                $newMoves = $matchInformationData['moves'] + 1;
+
+                $sql = 'UPDATE matches SET field = ?, moves = ? WHERE public_id = ?';
+                $query = $this->db->prepare($sql);
+                $query->bind_param('sis', $_POST['field'], $newMoves, $_POST['match_id']);
+                $query->execute();
+                $matchInformation = $query->get_result();
             } else
             {
                 http_response_code(400);
