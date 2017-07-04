@@ -8,6 +8,8 @@ class LobbyController extends BaseController {
 
     public function showLobby()
     {
+        $this->redirectOnMissingAuthentication();
+
         include(__DIR__.'/../config.php');
 
         // User information

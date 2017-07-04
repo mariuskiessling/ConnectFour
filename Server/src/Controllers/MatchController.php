@@ -8,6 +8,8 @@ class MatchController extends BaseController {
 
     public function showMatch()
     {
+        $this->redirectOnMissingAuthentication();
+
         if(isset($_GET['m']))
         {
             $sql = 'SELECT username FROM users WHERE id = ?';
@@ -153,6 +155,8 @@ class MatchController extends BaseController {
 
     public function showMatchJoin()
     {
+        $this->redirectOnMissingAuthentication();
+
         $sql = 'SELECT username FROM users WHERE id = ?';
         $query = $this->db->prepare($sql);
         $query->bind_param('i', $_SESSION['userId']);
@@ -235,6 +239,8 @@ class MatchController extends BaseController {
 
     public function joinMatch()
     {
+        $this->redirectOnMissingAuthentication();
+        
         $sql = 'SELECT username FROM users WHERE id = ?';
         $query = $this->db->prepare($sql);
         $query->bind_param('i', $_SESSION['userId']);

@@ -106,6 +106,8 @@ class LoginController extends BaseController {
 
     public function logout()
     {
+        $this->redirectOnMissingAuthentication();
+        
         session_destroy();
         header('Location: /login');
         die();
