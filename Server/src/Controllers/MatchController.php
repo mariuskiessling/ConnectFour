@@ -240,7 +240,7 @@ class MatchController extends BaseController {
     public function joinMatch()
     {
         $this->redirectOnMissingAuthentication();
-        
+
         $sql = 'SELECT username FROM users WHERE id = ?';
         $query = $this->db->prepare($sql);
         $query->bind_param('i', $_SESSION['userId']);
@@ -348,9 +348,65 @@ class MatchController extends BaseController {
                         $activePlayer = $matchInformationData['creator_id'];
                     }
 
-                    $sql = 'UPDATE matches SET field = ?, moves = ?, active_player_id = ? WHERE public_id = ?';
+                    // Check if one user won
+                    $field = json_decode($_POST['field']);
+                    $gameWidth = 7;
+                    $gameHeight = 6;
+                    $winnerUserCode = 0;
+
+                    for($row = 0; $row < $gameHeight; $row++)
+                    {
+                        for($column = 0; $column < $gameWidth; $column++)
+                        {
+                            // Check in every direction possible
+                            // Check to the right
+                            if($field[$row][$column] != 0)
+                            {
+                                $checkForUserCode = $field[$row][$column];
+
+                                // Check right
+                                for($i = 1; $i < 4; $i++)
+                                {
+                                    if(!isset($field[$row][$column + $i]))
+                                        break;
+                                    if($field[$row][$column + $i] != $checkForUserCode)
+                                        break;
+                                    if($i == 3)
+                                    {
+                                        $winnerUserCode = $checkForUserCode;
+                                        break;
+                                    }
+                                }
+                                // Check below
+                                for($i = 1; $i < 4; $i++)
+                                {
+                                    if(!isset($field[$row + $i][$column]))
+                                        break;
+                                    if($field[$row + $i][$column] != $checkForUserCode)
+                                        break;
+                                    if($i == 3)
+                                    {
+                                        $winnerUserCode = $checkForUserCode;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    $status = 1;
+                    if($winnerUserCode == 1)
+                    {
+                        $status = 2;
+                    }
+                    if($winnerUserCode == 2)
+                    {
+                        $status = 3;
+                    }
+
+                    $sql = 'UPDATE matches SET field = ?, moves = ?, active_player_id = ?, status = ? WHERE public_id = ?';
                     $query = $this->db->prepare($sql);
-                    $query->bind_param('siis', $_POST['field'], $newMoves, $activePlayer, $_POST['match_id']);
+                    $query->bind_param('siiis', $_POST['field'], $newMoves, $activePlayer, $status, $_POST['match_id']);
                     $query->execute();
                     $matchInformation = $query->get_result();
 
