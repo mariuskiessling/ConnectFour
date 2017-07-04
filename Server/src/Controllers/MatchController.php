@@ -282,7 +282,8 @@ class MatchController extends BaseController {
     {
         if(isset($_GET['match_id']))
         {
-            $sql = 'SELECT field, moves, status, active_player_id FROM matches
+            $sql = 'SELECT matches.field, matches.moves, matches.status, matches.creator_id,  matches.active_player_id, color_schemes.class as color_scheme_class FROM matches
+                JOIN color_schemes ON matches.color_scheme_id = color_schemes.id
                 WHERE public_id = ?';
             $query = $this->db->prepare($sql);
             $query->bind_param('s', $_GET['match_id']);
@@ -297,7 +298,8 @@ class MatchController extends BaseController {
                     'moves' => $matchInformationData['moves'],
                     'status' => $matchInformationData['status'],
                     'active' => $matchInformationData['active_player_id'] == $_SESSION['userId'],
-                    'user_code' => $matchInformationData['active_player_id'] == $_SESSION['userId'] ? 1 : 2
+                    'user_code' => $matchInformationData['creator_id'] == $_SESSION['userId'] ? 1 : 2,
+                    'color_scheme_class' => $matchInformationData['color_scheme_class']
                 ]);
             } else
             {
@@ -319,7 +321,7 @@ class MatchController extends BaseController {
     {
         if(isset($_POST['match_id']) && isset($_POST['field']))
         {
-            $sql = 'SELECT field, moves FROM matches WHERE public_id = ?';
+            $sql = 'SELECT field, moves, creator_id, opponent_id, active_player_id FROM matches WHERE public_id = ?';
             $query = $this->db->prepare($sql);
             $query->bind_param('s', $_POST['match_id']);
             $query->execute();
@@ -330,11 +332,29 @@ class MatchController extends BaseController {
                 $matchInformationData = $matchInformation->fetch_array();
                 $newMoves = $matchInformationData['moves'] + 1;
 
-                $sql = 'UPDATE matches SET field = ?, moves = ? WHERE public_id = ?';
-                $query = $this->db->prepare($sql);
-                $query->bind_param('sis', $_POST['field'], $newMoves, $_POST['match_id']);
-                $query->execute();
-                $matchInformation = $query->get_result();
+                if($_SESSION['userId'] == $matchInformationData['active_player_id'])
+                {
+                    if($_SESSION['userId'] == $matchInformationData['creator_id'])
+                    {
+                        $activePlayer = $matchInformationData['opponent_id'];
+                    } elseif($_SESSION['userId'] == $matchInformationData['opponent_id'])
+                    {
+                        $activePlayer = $matchInformationData['creator_id'];
+                    }
+
+                    $sql = 'UPDATE matches SET field = ?, moves = ?, active_player_id = ? WHERE public_id = ?';
+                    $query = $this->db->prepare($sql);
+                    $query->bind_param('siis', $_POST['field'], $newMoves, $activePlayer, $_POST['match_id']);
+                    $query->execute();
+                    $matchInformation = $query->get_result();
+
+                    echo json_encode([
+                        'moves' => $newMoves
+                    ]);
+                } else
+                {
+                    // TODO: Add error handling
+                }
             } else
             {
                 http_response_code(400);

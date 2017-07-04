@@ -4,6 +4,7 @@ let Game = {
     matchId: "",
     active: false,
     userCode: 0,
+    moveInProgress: false,
 
     settings: {
         chipMoveDownAnimationSpeed: 250 //ms
@@ -42,12 +43,13 @@ let Game = {
                 }
 
                 field = Game.loadField(field, JSON.parse(response.field));
+                field.className = response.color_scheme_class;
 
                 setTimeout(function() {
                     document.getElementById("loadGameLabel").className = "hidden";
                     document.getElementById("gameContent").appendChild(field);
 
-                    Game.updateMatchInformation();
+                    //Game.updateMatchInformation();
 
                     console.info("Game successfully initialized.\nWidth: " + Game.width + "\nHeight: " + Game.height + "\nMatch ID: " + Game.matchId);
 
@@ -84,10 +86,17 @@ let Game = {
     gameFieldClicked: function(event) {
         if(Game.active) {
             Game.active = false;
+            Game.moveInProgress = true;
+
             let chipPositionX = parseInt(event.target.parentElement.dataset.x);
             let chipPositionY = parseInt(event.target.parentElement.dataset.y);
 
-            event.target.parentElement.className += " hasChip hasChipA";
+            if(Game.userCode == 1) {
+                event.target.parentElement.className += " hasChip hasChipA";
+            }
+            if(Game.userCode == 2) {
+                event.target.parentElement.className += " hasChip hasChipB";
+            }
 
             // Check if chip already exists at this position
             if(!event.target.classList.contains("hasChip")) {
@@ -117,9 +126,15 @@ let Game = {
 
         if(fieldBelow != undefined && !fieldBelow.classList.contains('hasChip')) {
             element.classList.remove("hasChip");
-            element.classList.remove("hasChipA");
 
-            fieldBelow.className += " hasChip hasChipA";
+            if(element.classList.contains("hasChipA")) {
+                element.classList.remove("hasChipA");
+                fieldBelow.className += " hasChip hasChipA";
+            }
+            if(element.classList.contains("hasChipB")) {
+                element.classList.remove("hasChipB");
+                fieldBelow.className += " hasChip hasChipB";
+            }
 
             setTimeout(function() {
                 Game.moveChipDown(fieldBelow);
@@ -130,30 +145,29 @@ let Game = {
     },
 
     updateMatchInformation: function() {
-        let ajax = new XMLHttpRequest();
-        ajax.open("GET", "/match/update?match_id="+Game.matchId);
-        ajax.addEventListener('load', function(event) {
-            if(ajax.status == 200) {
-                let response = JSON.parse(ajax.responseText);
-
-                if(!Game.active) {
+        if(!Game.active && !Game.moveInProgress) {
+            let ajax = new XMLHttpRequest();
+            ajax.open("GET", "/match/update?match_id="+Game.matchId);
+            ajax.addEventListener('load', function(event) {
+                if(ajax.status == 200) {
+                    let response = JSON.parse(ajax.responseText);
                     let field = Game.loadField(document.getElementById("field"), JSON.parse(response.field));
                     let gameContent = document.getElementById("gameContent");
                     gameContent.replaceChild(field, document.getElementById("field"));
+
+                    Game.active = response.active;
+                    Game.userCode = response.user_code;
+
+                    document.getElementById("moves").innerHTML = response.moves;
+
+                    // TODO: Add surrender check
+                } else
+                {
+                    // TODO: Add error handling
                 }
-
-                Game.active = response.active;
-                Game.userCode = response.user_code;
-
-                document.getElementById("moves").innerHTML = response.moves;
-
-                // TODO: Add surrender check
-            } else
-            {
-                // TODO: Add error handling
-            }
-        });
-        ajax.send();
+            });
+            ajax.send();
+        }
     },
 
     pushMoveToServer: function(element) {
@@ -184,6 +198,7 @@ let Game = {
             if(ajax.status == 200) {
                 let response = JSON.parse(ajax.responseText);
                 document.getElementById("moves").innerHTML = response.moves;
+                Game.moveInProgress = false;
             } else
             {
                 // TODO: Add error handling

@@ -291,8 +291,12 @@ input:focus {
     cursor: pointer;
 }
 
-#gameContent .fieldTile.hasChip.hasChipA .fieldHole {
-    background-color: blue;
+#gameContent #field.yellowRedColorScheme .fieldTile.hasChipA .fieldHole {
+    background-color: #dbe615;
+}
+
+#gameContent #field.yellowRedColorScheme .fieldTile.hasChipB .fieldHole {
+    background-color: #e23112;
 }
 
 #match #surrenderQuestion {
