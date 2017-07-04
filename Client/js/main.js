@@ -49,7 +49,7 @@ let Game = {
                     document.getElementById("loadGameLabel").className = "hidden";
                     document.getElementById("gameContent").appendChild(field);
 
-                    //Game.updateMatchInformation();
+                    Game.updateMatchInformation();
 
                     console.info("Game successfully initialized.\nWidth: " + Game.width + "\nHeight: " + Game.height + "\nMatch ID: " + Game.matchId);
 
@@ -160,7 +160,31 @@ let Game = {
 
                     document.getElementById("moves").innerHTML = response.moves;
 
-                    // TODO: Add surrender check
+                    if(Game.active) {
+                        document.getElementById("pendingOpponentMove").className = "hidden";
+                        document.getElementById("pendingUserMove").className = "";
+                    } else {
+                        document.getElementById("pendingOpponentMove").className = "";
+                        document.getElementById("pendingUserMove").className = "hidden";
+                    }
+
+                    if(Game.userCode == 1 && response.status == 2 || Game.userCode == 2 && response.status == 3) {
+                        document.getElementById("endOverlay").getElementsByTagName("h1")[0].innerHTML = "Gewonnen";
+                    }
+                    if(Game.userCode == 1 && response.status == 3 || Game.userCode == 2 && response.status == 2) {
+                        document.getElementById("endOverlay").getElementsByTagName("h1")[0].innerHTML = "Verloren";
+                    }
+
+                    if(Game.userCode == 1 && response.status == 4 || Game.userCode == 2 && response.status == 5) {
+                        document.getElementById("endOverlay").getElementsByTagName("h1")[0].innerHTML = "Sie haben aufgegeben";
+                    }
+                    if(Game.userCode == 1 && response.status == 5 || Game.userCode == 2 && response.status == 4) {
+                        document.getElementById("endOverlay").getElementsByTagName("h1")[0].innerHTML = "Der Gegner hat aufgegeben";
+                    }
+
+                    if(response.status != 1) {
+                        document.getElementById("endOverlay").className = "";
+                    }
                 } else
                 {
                     // TODO: Add error handling
@@ -171,6 +195,9 @@ let Game = {
     },
 
     pushMoveToServer: function(element) {
+        document.getElementById("pendingOpponentMove").className = "";
+        document.getElementById("pendingUserMove").className = "hidden";
+
         let field = [];
 
         for(let y = 0; y < Game.height; y++) {
