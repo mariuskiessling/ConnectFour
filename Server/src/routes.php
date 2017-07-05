@@ -17,5 +17,6 @@ Router::Request('GET', '/match/join', 'MatchController@showMatchJoin');
 Router::Request('GET', '/match/join/confirm', 'MatchController@joinMatch');
 Router::Request('GET', '/match/update', 'MatchController@getMatchInformation');
 Router::Request('POST', '/match/make_move', 'MatchController@makeMove');
+Router::Request('GET', '/match/surrender', 'MatchController@surrender');
 
 Router::Request('GET', '/lobby', 'LobbyController@showLobby');              // Called to show user an interface to create new matches

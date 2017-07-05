@@ -278,8 +278,12 @@ let Interface = {
     },
 
     surrenderButtonClickedEventListener: function() {
-        document.getElementById("gameContent").className = "hidden";
-        document.getElementById("surrenderQuestion").className = "";
+        if(Game.active) {
+            document.getElementById("gameContent").className = "hidden";
+            document.getElementById("surrenderQuestion").className = "";
+        } else {
+            alert("Sie können nur aufgeben, wenn Sie am Zug sind.");
+        }
     },
 
     addConfirmSurrenderButtonClickedEventListener: function(elementId) {
@@ -287,10 +291,27 @@ let Interface = {
     },
 
     confirmSurrenderButtonClickedEventListener: function() {
-        if(document.getElementById("surrenderText").innerHTML == document.getElementById("surrenderTextAnswer").value) {
-            // TODO: Call surrender URL
+        if(Game.active) {
+            if(document.getElementById("surrenderText").innerHTML == document.getElementById("surrenderTextAnswer").value) {
+                let ajax = new XMLHttpRequest();
+                ajax.open("GET", "/match/surrender?match_id="+Game.matchId);
+                ajax.addEventListener('load', function(event) {
+                    if(ajax.status == 200) {
+                        console.log();
+                        let response = JSON.parse(ajax.responseText);
+                        Game.controlEndOverlay(response.status);
+                    } else
+                    {
+                        // TODO: Add better error handling
+                        alert("Beim Aufgeben ist ein Fehler aufgetreten.");
+                    }
+                });
+                ajax.send();
+            } else {
+                document.getElementById("surrenderError").className = "";
+            }
         } else {
-            document.getElementById("surrenderError").className = "";
+            alert("Sie können nur aufgeben, wenn Sie am Zug sind.");
         }
     },
 

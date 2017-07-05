@@ -504,6 +504,53 @@ class MatchController extends BaseController {
         }
     }
 
+    public function surrender()
+    {
+        if(isset($_GET['match_id']))
+        {
+            $sql = 'SELECT creator_id, opponent_id FROM matches
+                WHERE public_id = ?';
+            $query = $this->db->prepare($sql);
+            $query->bind_param('s', $_GET['match_id']);
+            $query->execute();
+            $matchInformation = $query->get_result();
+            $matchInformationData = $matchInformation->fetch_array();
+
+            if($matchInformation->num_rows != 0)
+            {
+                $status = 1;
+                if($matchInformationData['creator_id'] == $_SESSION['userId'])
+                {
+                    $status = 4;
+                } elseif($matchInformationData['opponent_id'] == $_SESSION['userId'])
+                {
+                    $status = 5;
+                }
+
+                $sql = 'UPDATE matches SET status = ? WHERE public_id = ?';
+                $query = $this->db->prepare($sql);
+                $query->bind_param('is', $status, $_GET['match_id']);
+                $query->execute();
+
+                echo json_encode([
+                    'status' => $status
+                ]);
+            } else
+            {
+                http_response_code(400);
+                echo json_encode([
+                    'error' => 'Match does not exist.'
+                ]);
+            }
+        } else
+        {
+            http_response_code(400);
+            echo json_encode([
+                'error' => 'Missing parameters.'
+            ]);
+        }
+    }
+
     private function generateQuickAccessCode($length = 5)
     {
         $dataset = '0123456789ABCDEFGHKLMNOPQRSTUVWXYZ';
