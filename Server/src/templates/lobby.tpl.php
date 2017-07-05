@@ -59,7 +59,7 @@ include('header.tpl.php');
                                 echo ($_SESSION['userId'] == $row['creator_id'] ? '<span class="icon_star"></span> Gewonnen' : '<span class="icon_star_alt"></span> Verloren');
                                 break;
                             case 3:
-                                echo ($_SESSION['userId'] == $row['opponent_id'] ? '<span class="icon_star_alt"></span> Gewonnen' : '<span class="icon_star_alt"></span> Verloren');
+                                echo ($_SESSION['userId'] == $row['opponent_id'] ? '<span class="icon_star"></span> Gewonnen' : '<span class="icon_star_alt"></span> Verloren');
                                 break;
                             case 4:
                                 echo ($_SESSION['userId'] == $row['creator_id'] ? '<span class="icon_dislike"></span> Sie haben aufgegeben' : '<span class="icon_star-half_alt"></span> Ihr Gegner hat aufgegeben');
