@@ -45,10 +45,10 @@ class LobbyController extends BaseController {
             FROM matches
             LEFT JOIN users ON matches.creator_id = users.id
             WHERE matches.opponent_id IS NULL
-            AND creator_id <> 1';
+            AND creator_id <> ?';
 
         $query = $this->db->prepare($sql);
-        $query->bind_param('ii', $_SESSION['userId'], $_SESSION['userId']);
+        $query->bind_param('i', $_SESSION['userId']);
         $query->execute();
         $openMatches = $query->get_result();
 
