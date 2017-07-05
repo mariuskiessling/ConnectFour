@@ -124,20 +124,24 @@ include('header.tpl.php');
 
                 <table>
                     <tr class="header">
-                        <td>Gegner</td>
+                        <td>Erstellt von</td>
                         <td>Erstellt am / um</td>
                         <td>Aktion</td>
                     </tr>
+
+                    <?php
+                    while($row = $openMatches->fetch_assoc()) {
+                    ?>
+
                     <tr>
-                        <td>Noch kein Gegner</td>
-                        <td>26.06.2017 (12:30 Uhr)</td>
-                        <td><a href="#" class="formatted">Betreten</a></td>
+                        <td><?= $row['creator'] ?></td>
+                        <td><?= (new DateTime($row['created_at']))->format('d.m.Y (H:i').' Uhr)' ?></td>
+                        <td><a href="/match/join?qac=<?= $row['quick_access_code'] ?>" class="formatted">Beitreten</a></td>
                     </tr>
-                    <tr>
-                        <td>FluffyCool96</td>
-                        <td>03.06.2017 (09:21 Uhr)</td>
-                        <td><a href="#" class="formatted">Betreten</a></td>
-                    </tr>
+
+                    <?php
+                    }
+                    ?>
                 </table>
             </div>
         </div>

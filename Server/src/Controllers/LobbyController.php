@@ -44,9 +44,11 @@ class LobbyController extends BaseController {
         $sql = 'SELECT users.username AS creator, matches.quick_access_code, matches.created_at
             FROM matches
             LEFT JOIN users ON matches.creator_id = users.id
-            WHERE opponent_id IS NULL';
+            WHERE matches.opponent_id IS NULL
+            AND creator_id <> 1';
 
         $query = $this->db->prepare($sql);
+        $query->bind_param('ii', $_SESSION['userId'], $_SESSION['userId']);
         $query->execute();
         $openMatches = $query->get_result();
 
