@@ -340,6 +340,53 @@ class MatchController extends BaseController {
 
                 if($_SESSION['userId'] == $matchInformationData['active_player_id'])
                 {
+                    $field = json_decode($_POST['field']);
+                    $oldField = json_decode($matchInformationData['field']);
+                    $gameWidth = 7;
+                    $gameHeight = 6;
+
+                    // Check if user made a valid move
+                    $changesCount = 0;
+                    $fatalFieldError = false;
+
+                    for($row = 0; $row < $gameHeight; $row++)
+                    {
+                        for($column = 0; $column < $gameWidth; $column++)
+                        {
+                            if($field[$row][$column] != $oldField[$row][$column])
+                            {
+                                if($oldField[$row][$column] != 0)
+                                {
+                                    $fatalFieldError = true;
+                                    break 2;
+                                } else
+                                {
+                                    // Check if chip is placed too high (not in the lowest row)
+                                    if(isset($field[$row + 1][$column]) && $field[$row + 1][$column] == 0)
+                                    {
+                                        $fatalFieldError = true;
+                                    }
+                                    $changesCount++;
+                                }
+
+                                if($changesCount > 1)
+                                {
+                                    $fatalFieldError = true;
+                                    break 2;
+                                }
+                            }
+                        }
+                    }
+
+                    if($fatalFieldError)
+                    {
+                        http_response_code(400);
+                        echo json_encode([
+                            'error' => 'Field manipulation not valid.'
+                        ]);
+                        die();
+                    }
+
                     if($_SESSION['userId'] == $matchInformationData['creator_id'])
                     {
                         $activePlayer = $matchInformationData['opponent_id'];
@@ -349,9 +396,6 @@ class MatchController extends BaseController {
                     }
 
                     // Check if one user won
-                    $field = json_decode($_POST['field']);
-                    $gameWidth = 7;
-                    $gameHeight = 6;
                     $winnerUserCode = 0;
 
                     for($row = 0; $row < $gameHeight; $row++)
