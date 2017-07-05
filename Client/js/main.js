@@ -168,29 +168,33 @@ let Game = {
                         document.getElementById("pendingUserMove").className = "hidden";
                     }
 
-                    if(Game.userCode == 1 && response.status == 2 || Game.userCode == 2 && response.status == 3) {
-                        document.getElementById("endOverlay").getElementsByTagName("h1")[0].innerHTML = "Gewonnen";
-                    }
-                    if(Game.userCode == 1 && response.status == 3 || Game.userCode == 2 && response.status == 2) {
-                        document.getElementById("endOverlay").getElementsByTagName("h1")[0].innerHTML = "Verloren";
-                    }
-
-                    if(Game.userCode == 1 && response.status == 4 || Game.userCode == 2 && response.status == 5) {
-                        document.getElementById("endOverlay").getElementsByTagName("h1")[0].innerHTML = "Sie haben aufgegeben";
-                    }
-                    if(Game.userCode == 1 && response.status == 5 || Game.userCode == 2 && response.status == 4) {
-                        document.getElementById("endOverlay").getElementsByTagName("h1")[0].innerHTML = "Der Gegner hat aufgegeben";
-                    }
-
-                    if(response.status != 1) {
-                        document.getElementById("endOverlay").className = "";
-                    }
+                    Game.controlEndOverlay(response.status);
                 } else
                 {
                     // TODO: Add error handling
                 }
             });
             ajax.send();
+        }
+    },
+
+    controlEndOverlay: function(status) {
+        if(Game.userCode == 1 && status == 2 || Game.userCode == 2 && status == 3) {
+            document.getElementById("endOverlay").getElementsByTagName("h1")[0].innerHTML = "Gewonnen";
+        }
+        if(Game.userCode == 1 && status == 3 || Game.userCode == 2 && status == 2) {
+            document.getElementById("endOverlay").getElementsByTagName("h1")[0].innerHTML = "Verloren";
+        }
+
+        if(Game.userCode == 1 && status == 4 || Game.userCode == 2 && status == 5) {
+            document.getElementById("endOverlay").getElementsByTagName("h1")[0].innerHTML = "Sie haben aufgegeben";
+        }
+        if(Game.userCode == 1 && status == 5 || Game.userCode == 2 && status == 4) {
+            document.getElementById("endOverlay").getElementsByTagName("h1")[0].innerHTML = "Der Gegner hat aufgegeben";
+        }
+
+        if(status != 1) {
+            document.getElementById("endOverlay").className = "";
         }
     },
 
@@ -225,6 +229,7 @@ let Game = {
             if(ajax.status == 200) {
                 let response = JSON.parse(ajax.responseText);
                 document.getElementById("moves").innerHTML = response.moves;
+                Game.controlEndOverlay(response.status);
                 Game.moveInProgress = false;
             } else
             {

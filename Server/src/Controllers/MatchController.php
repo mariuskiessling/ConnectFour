@@ -481,7 +481,8 @@ class MatchController extends BaseController {
                     $matchInformation = $query->get_result();
 
                     echo json_encode([
-                        'moves' => $newMoves
+                        'moves' => $newMoves,
+                        'status' => $status
                     ]);
                 } else
                 {
