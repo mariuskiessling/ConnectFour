@@ -390,6 +390,32 @@ class MatchController extends BaseController {
                                         break;
                                     }
                                 }
+                                // Check diagonal right
+                                for($i = 1; $i < 4; $i++)
+                                {
+                                    if(!isset($field[$row + $i][$column + $i]))
+                                        break;
+                                    if($field[$row + $i][$column + $i] != $checkForUserCode)
+                                        break;
+                                    if($i == 3)
+                                    {
+                                        $winnerUserCode = $checkForUserCode;
+                                        break;
+                                    }
+                                }
+                                // Check diagonal left
+                                for($i = 1; $i < 4; $i++)
+                                {
+                                    if(!isset($field[$row + $i][$column - $i]))
+                                        break;
+                                    if($field[$row + $i][$column - $i] != $checkForUserCode)
+                                        break;
+                                    if($i == 3)
+                                    {
+                                        $winnerUserCode = $checkForUserCode;
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
