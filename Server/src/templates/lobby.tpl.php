@@ -35,7 +35,17 @@ include('header.tpl.php');
                     ?>
 
                     <tr>
-                        <td><?= $row['opponent'] == NULL ? 'Noch kein Gegner' : $row['opponent'] ?></td>
+                        <td>
+                        <?php
+                        if($row['opponent_id'] == NULL) {
+                            echo 'Noch kein Gegener';
+                        } elseif($row['creator_id'] == $_SESSION['userId']) {
+                            echo $row['opponent_username'];
+                        } elseif($row['opponent_id'] == $_SESSION['userId']) {
+                            echo $row['creator_username'];
+                        }
+                        ?>
+                        </td>
                         <td><?= $row['quick_access_code'] ?></td>
                         <td><?= (new DateTime($row['created_at']))->format('d.m.Y (H:i').' Uhr)' ?></td>
                         <td>

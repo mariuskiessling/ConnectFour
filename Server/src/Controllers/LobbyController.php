@@ -21,13 +21,16 @@ class LobbyController extends BaseController {
 
         // The users matches
         // TODO: Add selection of user games that were not created by this user
-        $sql = 'SELECT matches.creator_id, matches.opponent_id, matches.public_id, users.username AS opponent, matches.quick_access_code, matches.status, matches.created_at
+        $sql = 'SELECT matches.creator_id, matches.opponent_id, matches.public_id, creator_users.username AS creator_username, opponent_users.username AS opponent_username, matches.quick_access_code, matches.status, matches.created_at
             FROM matches
-            LEFT JOIN users ON matches.opponent_id = users.id
-            WHERE creator_id = ?';
+            LEFT JOIN users creator_users ON matches.creator_id = creator_users.id
+            LEFT JOIN users opponent_users ON matches.opponent_id = opponent_users.id
+            WHERE creator_id = ?
+            OR opponent_id = ?
+            ORDER BY matches.created_at DESC';
 
         $query = $this->db->prepare($sql);
-        $query->bind_param('i', $_SESSION['userId']);
+        $query->bind_param('ii', $_SESSION['userId'], $_SESSION['userId']);
         $query->execute();
         $userMatches = $query->get_result();
 
