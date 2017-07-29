@@ -13,11 +13,12 @@ class LobbyController extends BaseController {
         include(__DIR__.'/../config.php');
 
         // User information
-        $sql = 'SELECT username FROM users WHERE id = ?';
+        $sql = 'SELECT username, profile_picture_filename FROM users WHERE id = ?';
         $query = $this->db->prepare($sql);
         $query->bind_param('i', $_SESSION['userId']);
         $query->execute();
         $userInformation = $query->get_result();
+        $userInformationData = $userInformation->fetch_array();
 
         // The users matches
         // TODO: Add selection of user games that were not created by this user
@@ -54,7 +55,8 @@ class LobbyController extends BaseController {
 
         Template::Render('lobby', [
             'title' => "Lobby",
-            'username' => $userInformation->fetch_array()['username'],
+            'username' => $userInformationData['username'],
+            'profilePictureFilename' => $userInformationData['profile_picture_filename'],
             'userMatches' => $userMatches,
             'colorSchemes' => $colorSchemes,
             'openMatches' => $openMatches,

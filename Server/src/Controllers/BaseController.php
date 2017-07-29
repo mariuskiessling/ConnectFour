@@ -21,4 +21,10 @@ class BaseController {
             die();
         }
     }
+
+    public function generateSecure384Hash()
+    {
+        $randomBytes = openssl_random_pseudo_bytes(384);
+        return hash('sha384', $randomBytes);
+    }
 }

@@ -1,7 +1,7 @@
 <?php
 
 class RegisterController extends BaseController {
-    
+
     public function __construct()
     {
         parent::__construct();
@@ -144,6 +144,20 @@ class RegisterController extends BaseController {
         {
             // TODO: Add error handling on missing user id
         }
+    }
+
+    public function showFinishRegistration()
+    {
+        $this->redirectOnMissingAuthentication();
+
+        Template::Render('registration_finish', [
+            'title' => "Registrierung abschließen",
+            'notification' => [
+                'title' => 'Erfolg',
+                'message' => 'Ihr Account wurde erfolgreich aktiviert. Bitte vervollständigen Sie Ihr Profil.',
+                'icon' => 'icon_check_alt2'
+            ]
+        ]);
     }
 
     private function generateSecureRegistrationToken()

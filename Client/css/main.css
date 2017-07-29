@@ -65,6 +65,11 @@ html, body {
     margin: -205px 0;
 }
 
+#authentication .authenticationWrapper#finishRegistrationWrapper {
+    height: 484px;
+    margin: -242px 0;
+}
+
 #authentication .authenticationWrapper #authenticationContent h1 {
     text-align: center;
     text-transform: uppercase;
@@ -510,6 +515,7 @@ nav #profileInformation #profilePicture {
     background-color: #fff;
     margin-right: 15px;
     float: left;
+    overflow: hidden;
 }
 
 nav #profileInformation #profilePicture.empty::before {

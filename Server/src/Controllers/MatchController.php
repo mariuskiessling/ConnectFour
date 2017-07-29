@@ -12,11 +12,12 @@ class MatchController extends BaseController {
 
         if(isset($_GET['m']))
         {
-            $sql = 'SELECT username FROM users WHERE id = ?';
+            $sql = 'SELECT username, profile_picture_filename FROM users WHERE id = ?';
             $query = $this->db->prepare($sql);
             $query->bind_param('i', $_SESSION['userId']);
             $query->execute();
             $userInformation = $query->get_result();
+            $userInformationData = $userInformation->fetch_array();
 
             // Check if current user is opponent or creator
             $sql = 'SELECT creator_id, opponent_id FROM matches
@@ -59,7 +60,8 @@ class MatchController extends BaseController {
 
                 Template::Render('match', [
                     'title' => "Spiel",
-                    'username' => $userInformation->fetch_array()['username'],
+                    'username' => $userInformationData['username'],
+                    'profilePictureFilename' => $userInformationData['profile_picture_filename'],
                     'opponent' => $matchInformationData['opponent'],
                     'moves' => $matchInformationData['moves'],
                     'color' => $color
@@ -69,7 +71,8 @@ class MatchController extends BaseController {
             {
                 Template::Render('match_dialouge', [
                     'title' => "Fehler",
-                    'username' => $userInformation->fetch_array()['username'],
+                    'username' => $userInformationData['username'],
+                    'profilePictureFilename' => $userInformationData['profile_picture_filename'],
                     'dialouge' => [
                         'icon' => 'icon_error-circle_alt',
                         'title' => 'Fehler',
@@ -157,15 +160,16 @@ class MatchController extends BaseController {
     {
         $this->redirectOnMissingAuthentication();
 
-        $sql = 'SELECT username FROM users WHERE id = ?';
+        $sql = 'SELECT username, profile_picture_filename FROM users WHERE id = ?';
         $query = $this->db->prepare($sql);
         $query->bind_param('i', $_SESSION['userId']);
         $query->execute();
         $userInformation = $query->get_result();
+        $userInformationData = $userInformation->fetch_array();
 
         if(isset($_GET['qac']))
         {
-            $sql = 'SELECT users.username, matches.public_id, matches.creator_id FROM matches
+            $sql = 'SELECT users.username, users.profile_picture_filename, matches.public_id, matches.creator_id FROM matches
                 JOIN users ON matches.creator_id = users.id
                 WHERE matches.quick_access_code = ?';
             $query = $this->db->prepare($sql);
@@ -182,7 +186,8 @@ class MatchController extends BaseController {
                 }
                 Template::Render('match_dialouge', [
                     'title' => "Lobby",
-                    'username' => $userInformation->fetch_array()['username'],
+                    'username' => $userInformationData['username'],
+                    'profilePictureFilename' => $userInformationData['profile_picture_filename'],
                     'dialouge' => [
                         'icon' => 'icon_question_alt2',
                         'title' => 'Spiel beitreten',
@@ -203,7 +208,8 @@ class MatchController extends BaseController {
             {
                 Template::Render('match_dialouge', [
                     'title' => "Lobby",
-                    'username' => $userInformation->fetch_array()['username'],
+                    'username' => $userInformationData['username'],
+                    'profilePictureFilename' => $userInformationData['profile_picture_filename'],
                     'dialouge' => [
                         'icon' => 'icon_error-circle_alt',
                         'title' => 'Spiel beitreten',
@@ -221,7 +227,8 @@ class MatchController extends BaseController {
         {
             Template::Render('match_dialouge', [
                 'title' => "Lobby",
-                'username' => $userInformation->fetch_array()['username'],
+                'username' => $userInformationData['username'],
+                'profilePictureFilename' => $userInformationData['profile_picture_filename'],
                 'dialouge' => [
                     'icon' => 'icon_error-circle_alt',
                     'title' => 'Spiel beitreten',

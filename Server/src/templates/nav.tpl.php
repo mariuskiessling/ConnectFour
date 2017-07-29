@@ -2,7 +2,12 @@
     <div id="navContent">
         <div class="centerWrapper">
             <div id="profileInformation">
-                <div id="profilePicture" class="empty"></div>
+                <?php
+                if($profilePictureFilename == NULL)
+                    echo '<div id="profilePicture" class="empty"></div>';
+                if($profilePictureFilename != NULL)
+                    echo '<div id="profilePicture"><img src="/storage/profile_pictures/'.$profilePictureFilename.'" width="40px" height="40px" /></div>';
+                ?>
                 <div id="profileTextInformation">
                     <span id="profileUsernameLabel">Angemeldet als:</span>
                     <span id="profileUsername"><?= @$username ?></span>
