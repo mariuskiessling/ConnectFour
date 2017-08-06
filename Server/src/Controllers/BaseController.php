@@ -1,5 +1,7 @@
 <?php
 
+use \ConnectFour\Helpers\Logger as Logger;
+
 class BaseController {
     protected $db;
 
@@ -9,8 +11,14 @@ class BaseController {
 
         include(__DIR__.'/../config.php');
 
-        $this->db = new mysqli($config['DB']['host'], $config['DB']['username'], $config['DB']['password'], $config['DB']['database']);
-        // TODO: Add error handling on connection error (HTTP 500)
+        $this->db = @new mysqli($config['DB']['host'], $config['DB']['username'], $config['DB']['password'], $config['DB']['database']);
+
+        if($this->db->connect_error)
+        {
+            Logger::Log("The connection to a MySQL server failed. Please check your configuration and server status.", Logger::$ERROR);
+
+            die();
+        }
     }
 
     public function redirectOnMissingAuthentication()
