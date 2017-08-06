@@ -27,6 +27,16 @@ class BaseController {
         {
             header('Location: /login');
             die();
+        } else {
+            // Check if user has not changed his user agent and IP address since
+            // his last authentication
+            if($_SESSION['clientUserAgent'] != $_SERVER['HTTP_USER_AGENT']
+                || $_SESSION['clientIPAddress'] != $_SERVER['REMOTE_ADDR'])
+            {
+                session_destroy();
+                header('Location: /login');
+                die();
+            }
         }
     }
 

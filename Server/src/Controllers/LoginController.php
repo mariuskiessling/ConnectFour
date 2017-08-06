@@ -49,6 +49,12 @@ class LoginController extends BaseController {
                     if($resultData['activated'] == 1)
                     {
                         $_SESSION['userId'] = $resultData['id'];
+
+                        // Add user agent and IP address of client to session for
+                        // further security checks
+                        $_SESSION['clientUserAgent'] = $_SERVER['HTTP_USER_AGENT'];
+                        $_SESSION['clientIPAddress'] = $_SERVER['REMOTE_ADDR'];
+
                         header('Location: /lobby');
                         die();
                     } else
@@ -107,7 +113,7 @@ class LoginController extends BaseController {
     public function logout()
     {
         $this->redirectOnMissingAuthentication();
-        
+
         session_destroy();
         header('Location: /login');
         die();
