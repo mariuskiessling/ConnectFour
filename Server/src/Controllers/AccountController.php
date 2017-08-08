@@ -47,6 +47,8 @@ class AccountController extends BaseController {
 
     public function updateInitialProfileInformation()
     {
+        $this->redirectOnMissingAuthentication();
+
         // Move profile picture if provided
         if(isset($_FILES['profile_picture']) && $_FILES['profile_picture']['tmp_name'] != '')
         {

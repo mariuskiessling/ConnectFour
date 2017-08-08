@@ -66,6 +66,8 @@ class LobbyController extends BaseController {
 
     public function getPublicMatchesPartial()
     {
+        $this->redirectOnMissingAuthenticationREST();
+
         $sql = 'SELECT users.username AS creator, matches.quick_access_code, matches.created_at
             FROM matches
             LEFT JOIN users ON matches.creator_id = users.id

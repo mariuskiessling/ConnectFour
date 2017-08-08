@@ -40,6 +40,31 @@ class BaseController {
         }
     }
 
+    public function redirectOnMissingAuthenticationREST()
+    {
+        if(!isset($_SESSION['userId']))
+        {
+            http_response_code(401);
+            echo json_encode([
+                'error' => 'Authentication missing. Please start a new session.'
+            ]);
+            die();
+        } else {
+            // Check if user has not changed his user agent and IP address since
+            // his last authentication
+            if($_SESSION['clientUserAgent'] != $_SERVER['HTTP_USER_AGENT']
+                || $_SESSION['clientIPAddress'] != $_SERVER['REMOTE_ADDR'])
+            {
+                session_destroy();
+                http_response_code(401);
+                echo json_encode([
+                    'error' => 'Authentication missing. Please start a new session.'
+                ]);
+                die();
+            }
+        }
+    }
+
     public function generateSecure384Hash()
     {
         $randomBytes = openssl_random_pseudo_bytes(384);

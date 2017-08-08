@@ -91,6 +91,8 @@ class MatchController extends BaseController {
 
     public function createMatch()
     {
+        $this->redirectOnMissingAuthenticationREST();
+
         if(isset($_POST['color_scheme']))
         {
             // Check if given color scheme id exists in DB
@@ -293,6 +295,8 @@ class MatchController extends BaseController {
 
     public function getMatchInformation()
     {
+        $this->redirectOnMissingAuthenticationREST();
+
         if(isset($_GET['match_id']))
         {
             $sql = 'SELECT matches.field, matches.moves, matches.status, matches.creator_id,  matches.active_player_id, color_schemes.class as color_scheme_class FROM matches
@@ -332,6 +336,8 @@ class MatchController extends BaseController {
 
     public function makeMove()
     {
+        $this->redirectOnMissingAuthenticationREST();
+
         if(isset($_POST['match_id']) && isset($_POST['field']))
         {
             $sql = 'SELECT field, moves, creator_id, opponent_id, active_player_id FROM matches WHERE public_id = ?';
@@ -513,6 +519,8 @@ class MatchController extends BaseController {
 
     public function surrender()
     {
+        $this->redirectOnMissingAuthenticationREST();
+        
         if(isset($_GET['match_id']))
         {
             $sql = 'SELECT creator_id, opponent_id FROM matches
