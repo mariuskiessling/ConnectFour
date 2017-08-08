@@ -346,6 +346,14 @@ input:focus {
     background-color: #e23112;
 }
 
+#gameContent #field.greenBlueColorScheme .fieldTile.hasChipA .fieldHole {
+    background-color: #42af77;
+}
+
+#gameContent #field.greenBlueColorScheme .fieldTile.hasChipB .fieldHole {
+    background-color: #1873b5;
+}
+
 #match #surrenderQuestion {
     width: 460px;
     display: block;
