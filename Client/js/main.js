@@ -267,7 +267,7 @@ let Interface = {
                 let response = JSON.parse(ajax.responseText);
                 document.getElementById("quickAccessCodeLinkPlaceholder").innerHTML = response.quick_access_code;
                 document.getElementById("quickAccessCodeValuePlaceholder").innerHTML = response.quick_access_code;
-                document.getElementById("openCreatedMatchButton").href = "/match/"+response.public_id;
+                document.getElementById("openCreatedMatchButton").href = "/match/?m="+response.public_id;
             } else
             {
                 // TODO: Add better error handling
