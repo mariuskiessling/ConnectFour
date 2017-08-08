@@ -63,4 +63,22 @@ class LobbyController extends BaseController {
             'host' => $config['host']
         ]);
     }
+
+    public function getPublicMatchesPartial()
+    {
+        $sql = 'SELECT users.username AS creator, matches.quick_access_code, matches.created_at
+            FROM matches
+            LEFT JOIN users ON matches.creator_id = users.id
+            WHERE matches.opponent_id IS NULL
+            AND creator_id <> ?';
+
+        $query = $this->db->prepare($sql);
+        $query->bind_param('i', $_SESSION['userId']);
+        $query->execute();
+        $openMatches = $query->get_result();
+
+        Template::Render('lobby_public_matches_partial', [
+            'openMatches' => $openMatches
+        ]);
+    }
 }

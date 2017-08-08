@@ -243,6 +243,10 @@ let Game = {
 };
 
 let Interface = {
+    settings: {
+        publicMatchesListRefreshTimeout: 3000 //ms
+    },
+
     init: function() {
 
     },
@@ -297,7 +301,6 @@ let Interface = {
                 ajax.open("GET", "/match/surrender?match_id="+Game.matchId);
                 ajax.addEventListener('load', function(event) {
                     if(ajax.status == 200) {
-                        console.log();
                         let response = JSON.parse(ajax.responseText);
                         Game.controlEndOverlay(response.status);
                     } else
@@ -322,5 +325,20 @@ let Interface = {
     cancelSurrenderLinkClickedEventListener: function() {
         document.getElementById("gameContent").className = "";
         document.getElementById("surrenderQuestion").className = "hidden";
+    },
+
+    refreshPublicMatchesList: function(elementId) {
+        let publicMatchesContainer = document.getElementById(elementId);
+
+        setInterval(function() {
+            let ajax = new XMLHttpRequest();
+            ajax.open("GET", "/lobby/public_matches_partial");
+            ajax.addEventListener('load', function(event) {
+                if(ajax.status == 200) {
+                    publicMatchesContainer.innerHTML = ajax.responseText;
+                }
+            });
+            ajax.send();
+        }, Interface.settings.publicMatchesListRefreshTimeout);
     }
 };

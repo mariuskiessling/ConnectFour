@@ -22,3 +22,4 @@ Router::Request('POST', '/match/make_move', 'MatchController@makeMove');
 Router::Request('GET', '/match/surrender', 'MatchController@surrender');
 
 Router::Request('GET', '/lobby', 'LobbyController@showLobby');              // Called to show user an interface to create new matches
+Router::Request('GET', '/lobby/public_matches_partial', 'LobbyController@getPublicMatchesPartial');
