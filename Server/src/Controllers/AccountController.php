@@ -9,8 +9,6 @@ class AccountController extends BaseController {
 
     public function activateAccount()
     {
-        $this->redirectOnMissingAuthentication();
-        
         if(isset($_GET['token']))
         {
             $sql = 'UPDATE users SET activated = 1 WHERE registration_token = ?';
@@ -36,6 +34,9 @@ class AccountController extends BaseController {
                 $userId = $query->get_result()->fetch_array()['id'];
 
                 $_SESSION['userId'] = $userId;
+                $_SESSION['clientUserAgent'] = $_SERVER['HTTP_USER_AGENT'];
+                $_SESSION['clientIPAddress'] = $_SERVER['REMOTE_ADDR'];
+
                 header('Location: /register/finish');
             }
         } else
@@ -68,8 +69,15 @@ class AccountController extends BaseController {
 
                 $sql = 'UPDATE users SET full_name = ?, birthday = ?, sex = ?, profile_picture_filename = ? WHERE id = ?';
                 $query = $this->db->prepare($sql);
-                @$query->bind_param('ssssi', @$_POST['name'], @$_POST['birthday'], @$_POST['sex'], $filename, $_SESSION['userId']);
+
+                $name = @$_POST['name'];
+                $birthday = date('Y-m-d', strtotime(str_replace('.', '/', @$_POST['birthday'])));
+                $sex = @$_POST['sex'];
+
+                $query->bind_param('ssssi', $name, $birthday, $sex, $filename, $_SESSION['userId']);
                 $query->execute();
+
+                header('Location: /lobby');
             } else {
                 Template::Render('registration_finish', [
                     'title' => "Registrierung abschließen",
@@ -84,8 +92,15 @@ class AccountController extends BaseController {
         {
             $sql = 'UPDATE users SET full_name = ?, birthday = ?, sex = ? WHERE id = ?';
             $query = $this->db->prepare($sql);
-            $query->bind_param('sssi', @$_POST['name'], @$_POST['birthday'], @$_POST['sex'], $_SESSION['userId']);
+
+            $name = @$_POST['name'];
+            $birthday = @$_POST['birthday'];
+            $sex = @$_POST['sex'];
+
+            $query->bind_param('sssi', $name, $birthday, $sex, $_SESSION['userId']);
             $query->execute();
+
+            header('Location: /lobby');
         }
     }
 }
