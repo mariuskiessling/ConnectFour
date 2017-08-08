@@ -21,66 +21,74 @@ include('header.tpl.php');
         <div id="userGames">
             <div class="centerWrapper">
                 <h1>Meine Spiele</h1>
-                <table>
-                    <tr class="header">
-                        <td>Gegner</td>
-                        <td>Quick-Access-Code</td>
-                        <td>Erstellt am / um</td>
-                        <td>Status</td>
-                        <td>Aktion</td>
-                    </tr>
+                <?php
+                if($userMatches->num_rows == 0) {
+                    echo '<h3 class="emptyListMessage"><span class="icon_info_alt"></span> Sie sind noch keinem Spiel beigetreten. Erstellen Sie eins oder treten Sie einem bei.</h3>';
+                } else {
+                ?>
 
-                    <?php
-                    while($row = $userMatches->fetch_assoc()) {
-                    ?>
+                    <table>
+                        <tr class="header">
+                            <td>Gegner</td>
+                            <td>Quick-Access-Code</td>
+                            <td>Erstellt am / um</td>
+                            <td>Status</td>
+                            <td>Aktion</td>
+                        </tr>
 
-                    <tr>
-                        <td>
                         <?php
-                        if($row['opponent_id'] == NULL) {
-                            echo 'Noch kein Gegener';
-                        } elseif($row['creator_id'] == $_SESSION['userId']) {
-                            echo $row['opponent_username'];
-                        } elseif($row['opponent_id'] == $_SESSION['userId']) {
-                            echo $row['creator_username'];
-                        }
+                        while($row = $userMatches->fetch_assoc()) {
                         ?>
-                        </td>
-                        <td><?= $row['quick_access_code'] ?></td>
-                        <td><?= (new DateTime($row['created_at']))->format('d.m.Y (H:i').' Uhr)' ?></td>
-                        <td>
-                        <?php
-                        switch($row['status']) {
-                            case 1:
-                                echo 'Noch nicht beendet';
-                                break;
 
-                            case 2:
-                                echo ($_SESSION['userId'] == $row['creator_id'] ? '<span class="icon_star"></span> Gewonnen' : '<span class="icon_star_alt"></span> Verloren');
-                                break;
-                            case 3:
-                                echo ($_SESSION['userId'] == $row['opponent_id'] ? '<span class="icon_star"></span> Gewonnen' : '<span class="icon_star_alt"></span> Verloren');
-                                break;
-                            case 4:
-                                echo ($_SESSION['userId'] == $row['creator_id'] ? '<span class="icon_dislike"></span> Sie haben aufgegeben' : '<span class="icon_star-half_alt"></span> Ihr Gegner hat aufgegeben');
-                                break;
-                            case 5:
-                                echo ($_SESSION['userId'] == $row['opponent_id'] ? '<span class="icon_dislike"></span> Sie haben aufgegeben' : '<span class="icon_star-half_alt"></span> Ihr Gegner hat aufgegeben');
-                                break;
-                        }
-                        ?>
-                        </td>
-                        <?php
-                        if($row['status'] == 1) {
-                            echo '<td><a href="/match?m='.$row['public_id'].'" target="_blank" class="formatted">Betreten</a></td>';
-                        } else {
-                            echo '<td><span class="icon_minus-06"></span></td>';
-                        }
-                        ?>
-                    </tr>
+                        <tr>
+                            <td>
+                            <?php
+                            if($row['opponent_id'] == NULL) {
+                                echo 'Noch kein Gegener';
+                            } elseif($row['creator_id'] == $_SESSION['userId']) {
+                                echo $row['opponent_username'];
+                            } elseif($row['opponent_id'] == $_SESSION['userId']) {
+                                echo $row['creator_username'];
+                            }
+                            ?>
+                            </td>
+                            <td><?= $row['quick_access_code'] ?></td>
+                            <td><?= (new DateTime($row['created_at']))->format('d.m.Y (H:i').' Uhr)' ?></td>
+                            <td>
+                            <?php
+                            switch($row['status']) {
+                                case 1:
+                                    echo 'Noch nicht beendet';
+                                    break;
 
-                    <?php } ?>
-                </table>
+                                case 2:
+                                    echo ($_SESSION['userId'] == $row['creator_id'] ? '<span class="icon_star"></span> Gewonnen' : '<span class="icon_star_alt"></span> Verloren');
+                                    break;
+                                case 3:
+                                    echo ($_SESSION['userId'] == $row['opponent_id'] ? '<span class="icon_star"></span> Gewonnen' : '<span class="icon_star_alt"></span> Verloren');
+                                    break;
+                                case 4:
+                                    echo ($_SESSION['userId'] == $row['creator_id'] ? '<span class="icon_dislike"></span> Sie haben aufgegeben' : '<span class="icon_star-half_alt"></span> Ihr Gegner hat aufgegeben');
+                                    break;
+                                case 5:
+                                    echo ($_SESSION['userId'] == $row['opponent_id'] ? '<span class="icon_dislike"></span> Sie haben aufgegeben' : '<span class="icon_star-half_alt"></span> Ihr Gegner hat aufgegeben');
+                                    break;
+                            }
+                            ?>
+                            </td>
+                            <?php
+                            if($row['status'] == 1) {
+                                echo '<td><a href="/match?m='.$row['public_id'].'" target="_blank" class="formatted">Betreten</a></td>';
+                            } else {
+                                echo '<td><span class="icon_minus-06"></span></td>';
+                            }
+                            ?>
+                        </tr>
+
+                        <?php } ?>
+                    </table>
+
+                <?php } ?>
             </div>
         </div>
 
@@ -118,31 +126,40 @@ include('header.tpl.php');
         <div id="joinPublicMatch">
             <div class="centerWrapper">
                 <h1>Öffentlichem Spiel beitreten</h1>
-                <p>
-                    Die folgende Liste zeigt eine Übersicht aller Spiele, denen beigetreten werden kann.
-                </p>
 
-                <table>
-                    <tr class="header">
-                        <td>Erstellt von</td>
-                        <td>Erstellt am / um</td>
-                        <td>Aktion</td>
-                    </tr>
+                <?php
+                if($openMatches->num_rows == 0) {
+                    echo '<h3 class="emptyListMessage"><span class="icon_info_alt"></span> Es stehen keine öffentlichen Spiele zum Beitreten zur Verfügung. Erstellen Sie ein neues oder bitten Sie einen anderen Nutzer ein neues zu erstellen.</h3>';
+                } else {
+                ?>
 
-                    <?php
-                    while($row = $openMatches->fetch_assoc()) {
-                    ?>
+                    <p>
+                        Die folgende Liste zeigt eine Übersicht aller Spiele, denen beigetreten werden kann.
+                    </p>
 
-                    <tr>
-                        <td><?= $row['creator'] ?></td>
-                        <td><?= (new DateTime($row['created_at']))->format('d.m.Y (H:i').' Uhr)' ?></td>
-                        <td><a href="/match/join?qac=<?= $row['quick_access_code'] ?>" class="formatted">Beitreten</a></td>
-                    </tr>
+                    <table>
+                        <tr class="header">
+                            <td>Erstellt von</td>
+                            <td>Erstellt am / um</td>
+                            <td>Aktion</td>
+                        </tr>
 
-                    <?php
-                    }
-                    ?>
-                </table>
+                        <?php
+                        while($row = $openMatches->fetch_assoc()) {
+                        ?>
+
+                        <tr>
+                            <td><?= $row['creator'] ?></td>
+                            <td><?= (new DateTime($row['created_at']))->format('d.m.Y (H:i').' Uhr)' ?></td>
+                            <td><a href="/match/join?qac=<?= $row['quick_access_code'] ?>" class="formatted">Beitreten</a></td>
+                        </tr>
+
+                        <?php
+                        }
+                        ?>
+                    </table>
+
+                <?php } ?>
             </div>
         </div>
     </div>

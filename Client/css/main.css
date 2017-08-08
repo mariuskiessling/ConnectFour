@@ -590,6 +590,17 @@ nav #logout span {
     font-weight: 300;
 }
 
+#lobby .emptyListMessage {
+    font-weight: 400;
+    font-size: 24px;
+    color: #2f2f2f;
+}
+
+#lobby .emptyListMessage span {
+    margin-right: 5px;
+    font-size: 22px;
+}
+
 #lobby #quickJoinMatch .button {
     display: block;
     margin: 20px 0 0 0;
