@@ -12,6 +12,7 @@ class BaseController {
         include(__DIR__.'/../config.php');
 
         $this->db = @new mysqli($config['DB']['host'], $config['DB']['username'], $config['DB']['password'], $config['DB']['database']);
+        $this->db->set_charset('utf8');
 
         if($this->db->connect_error)
         {
